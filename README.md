@@ -1,1 +1,1 @@
-This project is an application skeleton
+This project is an application skeleton.
