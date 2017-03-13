@@ -119,7 +119,7 @@ VRKeyboard = function () {
                 {c: ')', type:'standard'}
             ],
             [
-                {c: Unicode.TAB, type:'tab'},
+                {c: '#+=', type:'alt'},
                 {c: '!', type:'standard'},
                 {c: '"', type:'standard'},
                 {c: "'", type:'standard'},
@@ -181,7 +181,7 @@ VRKeyboard = function () {
                 {c: '}', type:'standard'}
             ],
             [
-                {c: Unicode.TAB, type:'tab'},
+                
                 {c: '₤', type:'standard'},
                 {c: '#', type:'standard'},
                 {c: '€', type:'standard'},
@@ -193,7 +193,7 @@ VRKeyboard = function () {
                 {c: ']', type:'standard'}
             ],
             [
-                {c: 'ALT', type:'alt'},
+                {c: '123', type:'alt'},
                 {c: '™', type:'standard'},
                 {c: '®', type:'standard'},
                 {c: "©", type:'standard'},
@@ -402,7 +402,13 @@ VRKeyboard = function () {
             }
                 break;
 
-            case 'ALT':
+            case '123':
+            {
+                this.build(KeyBoardTypes.NUMERIC);
+            }
+                break;
+
+            case '#+=':
             {
                 this.build(KeyBoardTypes.NUMERIC_ALT);
             }
