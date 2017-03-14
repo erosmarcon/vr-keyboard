@@ -64,7 +64,7 @@ Instantiate a VRKeyboard and listen for update event:
     vrKeyboard.addEventListener('update' , function(e){
         console.log(e.code)
     })
-    sceneCss.add(vrKeyboard)
+    scene.add(vrKeyboard)
 
 ### With VRTextInput/s in 3D space:
 
