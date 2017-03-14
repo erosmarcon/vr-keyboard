@@ -6,8 +6,9 @@ VRKey = function (keyboard, code, type) {
     var self = this;
 
     var element = document.createElement('div');
-    element.addEventListener("click", function ()
+    element.addEventListener("click", function (e)
     {
+        e.stopPropagation();
         self.dispatchEvent({type: 'click', code: self.code});
     })
 
@@ -24,6 +25,7 @@ VRKey = function (keyboard, code, type) {
     })
 
     this.style=keyboard.getKeyStyle(type)
+    
     element.style.width = this.style.width+ 'px';
     element.style.height = this.style.height + 'px';
     element.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
@@ -91,7 +93,8 @@ VRKeyboard = function () {
     this.padding=20;
     this.spacing = 10;
     this.layouts = {};
-    this.currentType = KeyBoardTypes.ALPHABETS_LOWER //KeyBoardTypes.ALPHABETS_LOWER
+    this.currentType = KeyBoardTypes.ALPHABETS_LOWER
+    this.fields=[];
 
     var numeric =
         [
@@ -303,8 +306,17 @@ VRKeyboard = function () {
         ];
 
 
-    this.config = function ()
+    this.init = function ()
     {
+        var self=this;
+        window.addEventListener("click", function()
+        {
+            for (var i in self.fields)
+            {
+                self.fields[i].blur();
+            }
+            self.target=null;
+        });
         this.currentType = KeyBoardTypes.ALPHABETS_LOWER;
         this.layouts = {}
         this.layouts[KeyBoardTypes.NUMBER_PAD] = number_pad;
@@ -312,18 +324,23 @@ VRKeyboard = function () {
         this.layouts[KeyBoardTypes.NUMERIC_ALT] = numeric_alt;
         this.layouts[KeyBoardTypes.ALPHABETS_LOWER] = alphabets_lower;
         this.layouts[KeyBoardTypes.ALPHABETS_UPPER] = alphabets_upper;
+        this.build();
     }
 
 //http://javascriptplayground.com/blog/2013/12/es5-getters-setters/
 
     this.setTarget=function(field)
     {
-        this.target=field;
-        this.referenceText=this.target.getAttribute("value")
-        this.target.focus()
-        this.target.setSelectionRange(this.referenceText.length, this.referenceText.length)
+        for (var i in this.fields)
+        {
+            this.fields[i].blur();
+        }
 
-        console.log(this.target.getAttribute("value"))
+        this.target=field;
+        this.referenceText=this.target.input.getAttribute("value")
+
+        this.target.focus()
+        this.target.input.setSelectionRange(this.referenceText.length, this.referenceText.length)
 
     }
 
@@ -393,9 +410,9 @@ VRKeyboard = function () {
     //do something to register every text field and use a typed class
 
 
-    this.handleClick = function (key) {
+    this.handleClick = function (code) {
 
-        switch (key) {
+        switch (code) {
             case '?123':
             {
                 this.build(KeyBoardTypes.NUMERIC);
@@ -437,17 +454,17 @@ VRKeyboard = function () {
             default:
             {
 
-                this.update(key)
-                //dispatchEvent(new KeyBoardEvent(KeyBoardEvent.UPDATE, kid));
+                this.update(code)
+                //dispatchEvent(new KeyBoardEvent(KeyBoardEvent.UPDATE, code));
             }
                 break;
         }
     }
 
-    this.update=function(key)
+    this.update=function(code)
     {
 
-        switch(key)
+        switch(code)
         {
             case Unicode.DELETE: //del
             {
@@ -479,7 +496,7 @@ VRKeyboard = function () {
 
             default :
             {
-                this.referenceText  += key;
+                this.referenceText  += code;
                 break;
             }
 
@@ -488,10 +505,9 @@ VRKeyboard = function () {
         if(this.target!=null)
         {
             this.target.focus();
-            this.target.setAttribute("value", this.referenceText);
-            this.target.setSelectionRange(this.referenceText.length, this.referenceText.length);
-            this.target.scrollLeft=this.target.scrollWidth;
-            console.log(this.target.size)
+            this.target.input.setAttribute("value", this.referenceText);
+            this.target.input.setSelectionRange(this.referenceText.length, this.referenceText.length);
+            this.target.input.scrollLeft=this.target.scrollWidth;
         }
 
     }
@@ -512,14 +528,14 @@ VRKeyboard = function () {
     }
 
 
-    this.build = function (param)
+    this.build = function (layout)
     {
 
         var self = this;
         this.clear()
 
-        if (param != null)
-            this.currentType = param;
+        if (layout != null)
+            this.currentType = layout;
 
         this.currentLayout = this.layouts[this.currentType]; //array
 
@@ -549,15 +565,16 @@ VRKeyboard = function () {
 
             for (var columns = 0; columns < this.currentLayout[rows].length; columns++) {
 
-                var ko = this.currentLayout[rows][columns]; //key object
-                var key = new VRKey(this, ko.c, ko.type);
+                var keyData = this.currentLayout[rows][columns]; //key object
+                var key = new VRKey(this, keyData.c, keyData.type);
 
                 key.addEventListener('click', function (e) {
+
                     self.handleClick(e.code)
                 })
 
-                xPos += (key.style.width / 2) //offset
-                key.position.set(xPos, yPos, this.depth);   //added depth //TODO
+                xPos += (key.style.width / 2)
+                key.position.set(xPos, yPos, this.depth);
                 row.add(key);
                 xPos += (key.style.width / 2) + this.spacing;
                 rW = xPos-this.spacing;
@@ -582,14 +599,106 @@ VRKeyboard = function () {
 
     }
 
-    this.config();
-    this.build();
+    this.register=function(field)
+    {
+        var self=this
+        field.addEventListener("click", function (e) {
+            e.stopPropagation();
+            self.setTarget(field);
 
+
+        })
+        this.fields.push(field);
+    }
+
+    this.init();
 }
 
 
 VRKeyboard.prototype = Object.assign(Object.create(THREE.Group.prototype), {
     constructor: VRKeyboard,
+});
+
+
+VRTextInput = function () {
+
+    THREE.Group.apply(this);
+
+    var self = this;
+
+    this.input = document.createElement("input");
+    this.input.setAttribute("type", "text");
+    this.input.setAttribute('name',"username");
+    this.input.setAttribute('value',"default");
+    this.input.setAttribute('value',"default");
+
+
+    //
+    this.input.style.fontFamily="Helvetica, sans-serif";
+    this.input.style.position="absolute";
+    this.input.style.top="18px";
+    this.input.style.left="0px";
+    this.input.style.right="0px";
+    this.input.style.fontSize="20px";
+    this.input.style.fontWeight="normal";
+    this.input.style.color="rgba(255,255,255,0.75)";
+    this.input.style.textShadow="0 0 10px rgba(0,255,255,0.95)";
+    this.input.style.backgroundColor="rgba(0,127,127,0.5)";
+    this.input.style.color= "#FFFFFF";
+    this.input.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
+    this.input.style.border="1px solid rgba(127,255,255,0.2)";
+    this.input.style.padding="20px";
+
+    this.addEventListener=function(event, listener)
+    {
+        this.input.addEventListener(event, listener)
+    }
+
+    this.focus=function()
+    {
+        this.input.focus()
+        this.input.style.boxShadow="0px 0px 12px rgba(0,255,255,0.75)";
+        this.input.style.border="1px solid rgba(127,255,255,0.75)";
+
+    }
+
+    this.blur=function()
+    {
+        this.input.blur()
+        this.input.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
+        this.input.style.border="1px solid rgba(127,255,255,0.2)";
+    }
+
+
+
+    this.input.addEventListener("keydown", function (e) {
+
+        e.preventDefault()
+
+    })
+
+
+
+    this.displayAsPassword=function(value)
+    {
+        if(value)
+            this.input.setAttribute("type", "password");
+        else
+            this.input.setAttribute("type", "text");
+    }
+
+
+
+    this.CSS3Dobject = new THREE.CSS3DObject(this.input);
+    this.add(this.CSS3Dobject);
+
+
+
+
+}
+
+VRTextInput.prototype = Object.assign(Object.create(THREE.Group.prototype), {
+    constructor: VRTextInput
 });
 
 

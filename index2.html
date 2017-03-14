@@ -8,11 +8,12 @@
     <script src="libs/three.min.js"></script>
     <script src="js/threejs/renderers/CSS3DRenderer.js"></script>
     <script src="js/threejs/controls/TrackballControls.js"></script>
+    <script src="js/VRTextInput.js"></script>
     <script src="js/VRKeyboard.js"></script>
     <script>
         var container;
         var camera;
-
+        var sceneGl, rendererGl;
         var sceneCss, rendererCss;
         var controls;
         var vrKeyboard
@@ -22,7 +23,7 @@
             container= document.getElementById(element);
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
 
-
+            sceneGl = new THREE.Scene();
             sceneCss = new THREE.Scene();
 
 
@@ -32,7 +33,19 @@
             rendererCss.domElement.style.top = 0;
 
 
+            rendererGl = new THREE.WebGLRenderer({alpha:true});
+            rendererGl.setClearColor(0x00ff00, 0.0);
+
+            rendererGl.setSize(window.innerWidth, window.innerHeight);
+
+            rendererGl.domElement.style.position = 'absolute';
+            rendererGl.domElement.style.zIndex = 1;
+            rendererGl.domElement.style.top = 0;
+            rendererGl.domElement.style.pointerEvents = 'none';
+            rendererCss.domElement.appendChild(rendererGl.domElement);
+
             container.appendChild(rendererCss.domElement);
+
             controls = new THREE.TrackballControls(camera, rendererCss.domElement);
             controls.maxPolarAngle = Math.PI * 0.5;
             controls.minDistance = 100;
@@ -42,30 +55,21 @@
             camera.lookAt(new THREE.Vector3(0,0,0))
 
             window.addEventListener('resize', onWindowResize, false);
+
             animate();
+
 
             //Keyboard
             vrKeyboard=new VRKeyboard() //must be a singleton
             sceneCss.add(vrKeyboard)
 
-
-            var usernameTxt=new VRTextInput();
-            usernameTxt.position.set(0,300,0);
-            sceneCss.add(usernameTxt);
-
-            var passwordTxt=new VRTextInput();
-            passwordTxt.position.set(0,200,0);
-            passwordTxt.displayAsPassword(true);
-            sceneCss.add(passwordTxt);
-
-            vrKeyboard.register(usernameTxt)
-            vrKeyboard.register(passwordTxt)
         }
 
         function onWindowResize()
         {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
+            rendererGl.setSize(window.innerWidth, window.innerHeight);
             rendererCss.setSize(window.innerWidth, window.innerHeight);
         }
 
@@ -73,8 +77,10 @@
         {
             requestAnimationFrame(animate);
             controls.update();
+            rendererGl.render(sceneGl, camera);
             rendererCss.render(sceneCss, camera);
         }
+
 
 /*
 
