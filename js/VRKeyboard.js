@@ -629,17 +629,15 @@ VRKeyboard.prototype = Object.assign(Object.create(THREE.Group.prototype), {
 });
 
 
-VRTextInput = function () {
+VRTextInput = function (name) {
 
     THREE.Group.apply(this);
 
-
     this.input = document.createElement("input");
     this.input.setAttribute("type", "text");
-    this.input.setAttribute('name',"username");
-    this.input.setAttribute('value',"default");
-    this.input.setAttribute('value',"default");
-
+    this.input.setAttribute('name',name);
+    this.input.setAttribute('placeholder',name);
+    this.input.setAttribute('value',"");
 
     //
     this.input.style.fontFamily="Helvetica, sans-serif";

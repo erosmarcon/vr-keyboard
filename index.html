@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>VRKeyboard</title>
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
-    <link rel="stylesheet" type="text/css" href="css/keyboard.css"/>
     <script src="libs/three.min.js"></script>
     <script src="js/threejs/renderers/CSS3DRenderer.js"></script>
     <script src="js/threejs/controls/TrackballControls.js"></script>
@@ -49,11 +48,11 @@
             sceneCss.add(vrKeyboard)
 
 
-            var usernameTxt=new VRTextInput();
+            var usernameTxt=new VRTextInput('user');
             usernameTxt.position.set(0,300,0);
             sceneCss.add(usernameTxt);
 
-            var passwordTxt=new VRTextInput();
+            var passwordTxt=new VRTextInput('password');
             passwordTxt.position.set(0,200,0);
             passwordTxt.displayAsPassword(true);
             sceneCss.add(passwordTxt);
