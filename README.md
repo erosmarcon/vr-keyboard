@@ -90,7 +90,14 @@ Get the VRTextInput value:
 
 ## How to style
 
-TODO
+VRKeyboard exposes a setStyle() method for basic customization. It accepts three arguments: key color (hex), label color (hex) and rounded key corners (boolean).
+
+Example:
+
+    //Red base with yellow labels and rounded keys
+    vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
+
+If you want to go more in depth on styling and customizing, you can edit any css rule in javascript source code to suit your needs.
 
 ## Examples
 

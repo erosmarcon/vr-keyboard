@@ -2,7 +2,7 @@
 VRKey = function (keyboard, code, type) {
     THREE.Group.apply(this)
     this.code = code
-
+    this.keyboard=keyboard
     var self = this;
 
     var element = document.createElement('div');
@@ -30,25 +30,32 @@ VRKey = function (keyboard, code, type) {
 
     element.addEventListener("mouseover", function ()
     {
-        this.style.boxShadow="0px 0px 12px rgba(0,255,255,0.75)";
-        this.style.border="1px solid rgba(127,255,255,0.75)";
+
+        this.style.boxShadow="0px 0px 12px rgba("+self.keyboard.keyColor+",0.75)";
+        this.style.border="1px solid rgba("+self.keyboard.keyColor+",0.75)";
     })
 
     element.addEventListener("mouseout", function ()
     {
-        this.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
-        this.style.border="1px solid rgba(127,255,255,0.25)";
+
+        this.style.boxShadow="0px 0px 12px rgba("+self.keyboard.keyColor+",0.5)";
+        this.style.border="1px solid rgba("+self.keyboard.keyColor+",0.25)";
     })
 
     this.style=keyboard.getKeyStyle(type)
-    
+
+
+
     element.style.width = this.style.width+ 'px';
     element.style.height = this.style.height + 'px';
-    element.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
-    element.style.border="1px solid rgba(127,255,255,0.25)";
+    element.style.boxShadow="0px 0px 12px rgba("+this.keyboard.keyColor.toString()+",0.5)";
+    element.style.border="1px solid rgba("+this.keyboard.keyColor+",0.25)";
     element.style.textAlign="center";
     element.style.cursor="default";
-    element.style.backgroundColor = 'rgba(0,127,127,0.5)';
+    element.style.backgroundColor = "rgba("+this.keyboard.keyColor+",0.5)";
+    if(this.keyboard.rounded)
+        element.style.borderRadius="24px";
+
 
 
     var label = document.createElement('div');
@@ -59,8 +66,8 @@ VRKey = function (keyboard, code, type) {
     label.style.right="0px";
     label.style.fontSize="20px";
     label.style.fontWeight="normal";
-    label.style.color="rgba(255,255,255,0.75)";
-    label.style.textShadow="0 0 10px rgba(0,255,255,0.95)";
+    label.style.color="rgba("+this.keyboard.labelColor+",0.75)";
+    label.style.textShadow="0 0 10px rgba("+this.keyboard.keyColor.toString()+",0.95)";
 
     label.textContent = code;
     element.appendChild(label);
@@ -322,6 +329,14 @@ VRKeyboard = function () {
         ];
 
 
+    this.hexToRGB=function (hex){
+        var r = hex >> 16;
+        var g = hex >> 8 & 0xFF;
+        var b = hex & 0xFF;
+        return [r,g,b];
+    }
+
+
     this.init = function ()
     {
         var self=this;
@@ -333,6 +348,10 @@ VRKeyboard = function () {
             }
             self.target=null;
         });
+        this.keyColor=this.hexToRGB("0x666666");
+        this.labelColor=this.hexToRGB("0xFFFFFF");
+        this.rounded=false;
+
         this.currentType = KeyBoardTypes.ALPHABETS_LOWER;
         this.layouts = {}
         this.layouts[KeyBoardTypes.NUMBER_PAD] = number_pad;
@@ -530,8 +549,8 @@ VRKeyboard = function () {
         //Background Pad
         var bg = document.createElement('div');
 
-        bg.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
-        bg.style.border="1px solid rgba(127,255,255,0.2)";
+        bg.style.boxShadow="0px 0px 12px rgba("+this.keyColor.toString()+",0.5)";
+        bg.style.border="1px solid rgba("+this.keyColor.toString()+",0.2)";
         bg.style.cursor="default";
         bg.addEventListener("click", function (e)
         {
@@ -604,6 +623,16 @@ VRKeyboard = function () {
 
     }
 
+    this.setStyle=function(keyColor, labelColor, rounded)
+    {
+        this.keyColor=this.hexToRGB(keyColor);
+        this.labelColor=this.hexToRGB(labelColor);
+        this.rounded=rounded;
+        this.build(this.currentType);
+    }
+
+
+
     this.register=function(field)
     {
         var self=this;
@@ -644,7 +673,6 @@ VRTextInput = function (name) {
     this.input.style.color="rgba(255,255,255,0.75)";
     this.input.style.textShadow="0 0 10px rgba(0,255,255,0.95)";
     this.input.style.backgroundColor="rgba(0,127,127,0.5)";
-    this.input.style.color= "#FFFFFF";
     this.input.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
     this.input.style.border="1px solid rgba(127,255,255,0.2)";
     this.input.style.padding="20px";

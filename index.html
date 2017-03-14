@@ -14,8 +14,8 @@
 
         var sceneCss, rendererCss;
         var controls;
-        var vrKeyboard
-        var usernameTxt, passwordTxt
+        var vrKeyboard;
+        var usernameTxt, passwordTxt;
 
         function init(element)
         {
@@ -46,6 +46,8 @@
             vrKeyboard.addEventListener('update' , function(e){
                 console.log(e.code)
             })
+            //vrKeyboard.setColor("0xA3D900")
+            vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
             sceneCss.add(vrKeyboard)
 
 
@@ -77,16 +79,6 @@
             rendererCss.render(sceneCss, camera);
         }
 
-/*
-
-        function hexToRGB (hex){
-            var r = hex >> 16;
-            var g = hex >> 8 & 0xFF;
-            var b = hex & 0xFF;
-            return [r,g,b];
-        }
-        console.log(hexToRGB("0xFF0000"))
-*/
 
     </script>
 </head>
