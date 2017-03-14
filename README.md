@@ -46,7 +46,7 @@ Create a basic 3D scene and render with CSS3DRenderer:
 
         function animate(){
             requestAnimationFrame(animate);
-            renderer.render(sceneCss, camera);
+            renderer.render(scene, camera);
         }
     </script>
 
@@ -88,7 +88,7 @@ Get the VRTextInput value:
 
     console.log(usernameTxt.getValue());
 
-## Styling
+## How to style
 
 TODO
 
