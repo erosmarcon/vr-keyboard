@@ -3,7 +3,7 @@
 ## What is
 A keyboard input based on [THREE.js](https://threejs.org/) for virtual reality experiences or just as an alternative to the standard on-screen keyboard on touch devices.
 
-## Usage
+## How to setup
 
 Include THREE.js library, THREECSS3DRenderer and VRKeyboard:
 
@@ -52,3 +52,17 @@ Create a basic 3D scene and render with CSS3DRenderer:
     <body onload="init('container')">
         <div id="container"></div>
     </body>
+
+## How to use
+
+###Basic:
+
+Instantiate a VRKeyboard and listen for update event:
+
+    vrKeyboard=new VRKeyboard()
+    vrKeyboard.addEventListener('update' , function(e){
+        console.log(e.code)
+    })
+    sceneCss.add(vrKeyboard)
+
+###With text inputs:
