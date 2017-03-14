@@ -422,10 +422,6 @@ VRKeyboard = function () {
         return style;
     }
 
-
-    //do something to register every text field and use a typed class
-
-
     this.handleClick = function (code) {
 
         switch (code) {
@@ -458,7 +454,6 @@ VRKeyboard = function () {
             default:
                 this.update(code);
                 //dispatchEvent(new KeyBoardEvent(KeyBoardEvent.UPDATE, code));
-
 
         }
     }
@@ -615,8 +610,6 @@ VRKeyboard = function () {
         field.addEventListener("click", function (e) {
             e.stopPropagation();
             self.setTarget(field);
-
-
         })
         this.fields.push(field);
     }
@@ -676,15 +669,11 @@ VRTextInput = function (name) {
         this.input.style.border="1px solid rgba(127,255,255,0.2)";
     }
 
-
-
     this.input.addEventListener("keydown", function (e) {
 
         e.preventDefault()
 
     })
-
-
 
     this.displayAsPassword=function(value)
     {
@@ -694,14 +683,8 @@ VRTextInput = function (name) {
             this.input.setAttribute("type", "text");
     }
 
-
-
     this.CSS3Dobject = new THREE.CSS3DObject(this.input);
     this.add(this.CSS3Dobject);
-
-
-
-
 }
 
 VRTextInput.prototype = Object.assign(Object.create(THREE.Group.prototype), {

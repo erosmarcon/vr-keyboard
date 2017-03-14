@@ -17,34 +17,32 @@ Create a basic 3D scene and render with CSS3DRenderer:
     <script>
         var container;
         var camera;
-        var sceneCss, rendererCss;
+        var scene, renderer;
 
-        function init(element)
-        {
+        function init(element){
             container= document.getElementById(element);
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
-            sceneCss = new THREE.Scene();
-            rendererCss = new THREE.CSS3DRenderer();
-            rendererCss.setSize(window.innerWidth, window.innerHeight);
-            rendererCss.domElement.style.position = 'absolute';
-            rendererCss.domElement.style.top = 0;
-            container.appendChild(rendererCss.domElement);
+            scene = new THREE.Scene();
+            renderer = new THREE.CSS3DRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.top = 0;
+            container.appendChild(renderer.domElement);
             camera.position.set(0, 0, 1500);
             camera.lookAt(new THREE.Vector3(0,0,0))
             window.addEventListener('resize', onWindowResize, false);
             animate();
         }
 
-        function onWindowResize()
-        {
+        function onWindowResize(){
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-            rendererCss.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(window.innerWidth, window.innerHeight);
         }
-        function animate()
-        {
+
+        function animate(){
             requestAnimationFrame(animate);
-            rendererCss.render(sceneCss, camera);
+            renderer.render(sceneCss, camera);
         }
     </script>
 
@@ -64,4 +62,28 @@ Instantiate a VRKeyboard and listen for update event:
     })
     sceneCss.add(vrKeyboard)
 
-### With VR text inputs in 3D space:
+### With VRTextInput/s in 3D space:
+
+Add VRTextInput instances as necessary, for example:
+
+    var usernameTxt=new VRTextInput('user');
+    usernameTxt.position.set(0,300,0);
+    scene.add(usernameTxt);
+
+    var passwordTxt=new VRTextInput('password');
+    passwordTxt.position.set(0,220,0);
+    passwordTxt.displayAsPassword(true);
+    scene.add(passwordTxt);
+
+Register instances VRTextInput instances to the VRKeyboard:
+
+      vrKeyboard.register(usernameTxt)
+      vrKeyboard.register(passwordTxt)
+
+## Styling
+
+TODO
+
+## Examples
+
+TODO
