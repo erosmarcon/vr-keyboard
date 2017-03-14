@@ -44,7 +44,6 @@ Create a basic 3D scene and render with CSS3DRenderer:
         function animate()
         {
             requestAnimationFrame(animate);
-            controls.update();
             rendererCss.render(sceneCss, camera);
         }
     </script>
@@ -59,10 +58,10 @@ Create a basic 3D scene and render with CSS3DRenderer:
 
 Instantiate a VRKeyboard and listen for update event:
 
-    vrKeyboard=new VRKeyboard()
+    var vrKeyboard=new VRKeyboard()
     vrKeyboard.addEventListener('update' , function(e){
         console.log(e.code)
     })
     sceneCss.add(vrKeyboard)
 
-### With text inputs:
+### With VR text inputs in 3D space:
