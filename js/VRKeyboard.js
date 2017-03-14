@@ -12,6 +12,22 @@ VRKey = function (keyboard, code, type) {
         self.dispatchEvent({type: 'click', code: self.code});
     })
 
+    element.addEventListener("mouseup", function (e)
+    {
+        self.dispatchEvent({type: 'mouseup', code: self.code});
+    })
+
+    element.addEventListener("mousedown", function (e)
+    {
+        self.dispatchEvent({type: 'mousedown', code: self.code});
+    })
+
+    element.addEventListener("mouseleave", function (e)
+    {
+        self.dispatchEvent({type: 'mouseleave', code: self.code});
+    })
+
+
     element.addEventListener("mouseover", function ()
     {
         this.style.boxShadow="0px 0px 12px rgba(0,255,255,0.75)";
@@ -414,50 +430,43 @@ VRKeyboard = function () {
 
         switch (code) {
             case '?123':
-            {
+
                 this.build(KeyBoardTypes.NUMERIC);
-            }
                 break;
 
             case '123':
-            {
+
                 this.build(KeyBoardTypes.NUMERIC);
-            }
                 break;
 
             case '#+=':
-            {
+
                 this.build(KeyBoardTypes.NUMERIC_ALT);
-            }
                 break;
 
             case 'ABC':
-            {
+
                 this.build(KeyBoardTypes.ALPHABETS_LOWER);
-            }
                 break;
 
             //TAB
             case Unicode.TAB:
-            {
+
                 this.build(KeyBoardTypes.NUMERIC_ALT);
-            }
                 break;
 
             //Shift
             case Unicode.SHIFT:
-            {
+
                 this.build(this.currentType == KeyBoardTypes.ALPHABETS_LOWER ? KeyBoardTypes.ALPHABETS_UPPER : KeyBoardTypes.ALPHABETS_LOWER);
-            }
                 break;
 
             default:
-            {
 
                 this.update(code)
                 //dispatchEvent(new KeyBoardEvent(KeyBoardEvent.UPDATE, code));
-            }
-                break;
+
+
         }
     }
 
@@ -541,11 +550,16 @@ VRKeyboard = function () {
 
         //Background Pad
         var bg = document.createElement('div');
-        bg.style.width = '800px'; //TODO
-        bg.style.height = '340px';
-        bg.className='keyboardBg'
 
+        bg.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
+        bg.style.border="1px solid rgba(127,255,255,0.2)";
+        bg.style.cursor="default";
+        bg.addEventListener("click", function (e)
+        {
+            e.stopPropagation();
+        })
         this.background= new THREE.CSS3DObject(bg);
+
         this.add(this.background);
 
         //Keyholder
@@ -571,6 +585,19 @@ VRKeyboard = function () {
                 key.addEventListener('click', function (e) {
 
                     self.handleClick(e.code)
+
+                })
+
+                key.addEventListener('mousedown', function (e) {
+                    this.scale.set(0.95,0.95,0.95)
+                })
+
+                key.addEventListener('mouseup', function (e) {
+                    this.scale.set(1,1,1)
+                })
+
+                key.addEventListener('mouseleave', function (e) {
+                    this.scale.set(1,1,1)
                 })
 
                 xPos += (key.style.width / 2)
@@ -589,7 +616,6 @@ VRKeyboard = function () {
             this.keyholder.add(row);
         }
 
-
         bg.style.height =   H+(this.padding*2)+'px';
         bg.style.width  =   W+(this.padding*2)+'px';
         H -= (key.style.height + this.spacing);
@@ -601,7 +627,7 @@ VRKeyboard = function () {
 
     this.register=function(field)
     {
-        var self=this
+        var self=this;
         field.addEventListener("click", function (e) {
             e.stopPropagation();
             self.setTarget(field);
@@ -624,7 +650,6 @@ VRTextInput = function () {
 
     THREE.Group.apply(this);
 
-    var self = this;
 
     this.input = document.createElement("input");
     this.input.setAttribute("type", "text");
