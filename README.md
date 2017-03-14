@@ -77,8 +77,12 @@ Add VRTextInput instances as necessary, for example:
 
 Register instances VRTextInput instances to the VRKeyboard:
 
-      vrKeyboard.register(usernameTxt)
-      vrKeyboard.register(passwordTxt)
+      vrKeyboard.register(usernameTxt);
+      vrKeyboard.register(passwordTxt);
+
+Get the VRTextInput value:
+
+    console.log(usernameTxt.getValue());
 
 ## Styling
 

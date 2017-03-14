@@ -649,6 +649,12 @@ VRTextInput = function (name) {
     this.input.style.border="1px solid rgba(127,255,255,0.2)";
     this.input.style.padding="20px";
 
+    this.getValue=function()
+    {
+        return this.input.getAttribute("value")
+    }
+
+
     this.addEventListener=function(event, listener)
     {
         this.input.addEventListener(event, listener)

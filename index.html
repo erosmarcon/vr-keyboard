@@ -15,6 +15,7 @@
         var sceneCss, rendererCss;
         var controls;
         var vrKeyboard
+        var usernameTxt, passwordTxt
 
         function init(element)
         {
@@ -48,11 +49,11 @@
             sceneCss.add(vrKeyboard)
 
 
-            var usernameTxt=new VRTextInput('user');
+            usernameTxt=new VRTextInput('user');
             usernameTxt.position.set(0,300,0);
             sceneCss.add(usernameTxt);
 
-            var passwordTxt=new VRTextInput('password');
+            passwordTxt=new VRTextInput('password');
             passwordTxt.position.set(0,220,0);
             passwordTxt.displayAsPassword(true);
             sceneCss.add(passwordTxt);
@@ -66,6 +67,7 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             rendererCss.setSize(window.innerWidth, window.innerHeight);
+
         }
 
         function animate()
