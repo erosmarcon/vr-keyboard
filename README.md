@@ -79,7 +79,7 @@ Add VRTextInput instances as necessary, for example:
     passwordTxt.displayAsPassword(true);
     scene.add(passwordTxt);
 
-Register instances VRTextInput instances to the VRKeyboard:
+Register VRTextInput instances to the VRKeyboard:
 
       vrKeyboard.register(usernameTxt);
       vrKeyboard.register(passwordTxt);
