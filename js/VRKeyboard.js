@@ -430,40 +430,33 @@ VRKeyboard = function () {
 
         switch (code) {
             case '?123':
-
                 this.build(KeyBoardTypes.NUMERIC);
                 break;
 
             case '123':
-
                 this.build(KeyBoardTypes.NUMERIC);
                 break;
 
             case '#+=':
-
                 this.build(KeyBoardTypes.NUMERIC_ALT);
                 break;
 
             case 'ABC':
-
                 this.build(KeyBoardTypes.ALPHABETS_LOWER);
                 break;
 
             //TAB
             case Unicode.TAB:
-
                 this.build(KeyBoardTypes.NUMERIC_ALT);
                 break;
 
             //Shift
             case Unicode.SHIFT:
-
                 this.build(this.currentType == KeyBoardTypes.ALPHABETS_LOWER ? KeyBoardTypes.ALPHABETS_UPPER : KeyBoardTypes.ALPHABETS_LOWER);
                 break;
 
             default:
-
-                this.update(code)
+                this.update(code);
                 //dispatchEvent(new KeyBoardEvent(KeyBoardEvent.UPDATE, code));
 
 
@@ -472,7 +465,6 @@ VRKeyboard = function () {
 
     this.update=function(code)
     {
-
         switch(code)
         {
             case Unicode.DELETE: //del
@@ -481,33 +473,24 @@ VRKeyboard = function () {
                 break;
             }
 
-
             case Unicode.ENTER:
-            {
                 this.referenceText  += '\n';
                 //hide();
                 //dispatchEvent(new KeyBoardEvent(KeyBoardEvent.ENTER));
                 return;
                 break;
-            }
 
             case Unicode.TAB:
-            {
                 //this.referenceText  += '\t';
                 break;
-            }
 
             case  Unicode.SPACE:
-            {
                 this.referenceText  += ' ';
                 break;
-            }
 
             default :
-            {
                 this.referenceText  += code;
                 break;
-            }
 
         }
 
