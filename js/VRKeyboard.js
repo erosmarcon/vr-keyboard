@@ -501,6 +501,7 @@ VRKeyboard = function () {
             this.target.input.setSelectionRange(this.referenceText.length, this.referenceText.length);
             this.target.input.scrollLeft=this.target.input.scrollWidth;
         }
+        this.dispatchEvent({type: 'update', code:code});
 
     }
 
@@ -572,7 +573,7 @@ VRKeyboard = function () {
                 })
 
                 key.addEventListener('mousedown', function (e) {
-                    this.scale.set(0.95,0.95,0.95)
+                    this.scale.set(0.98,0.98,0.98)
                 })
 
                 key.addEventListener('mouseup', function (e) {

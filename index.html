@@ -21,15 +21,12 @@
             container= document.getElementById(element);
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
 
-
             sceneCss = new THREE.Scene();
-
 
             rendererCss = new THREE.CSS3DRenderer();
             rendererCss.setSize(window.innerWidth, window.innerHeight);
             rendererCss.domElement.style.position = 'absolute';
             rendererCss.domElement.style.top = 0;
-
 
             container.appendChild(rendererCss.domElement);
             controls = new THREE.TrackballControls(camera, rendererCss.domElement);
@@ -45,6 +42,9 @@
 
             //Keyboard
             vrKeyboard=new VRKeyboard() //must be a singleton
+            vrKeyboard.addEventListener('update' , function(e){
+                console.log(e.code)
+            })
             sceneCss.add(vrKeyboard)
 
 
@@ -53,7 +53,7 @@
             sceneCss.add(usernameTxt);
 
             var passwordTxt=new VRTextInput('password');
-            passwordTxt.position.set(0,200,0);
+            passwordTxt.position.set(0,220,0);
             passwordTxt.displayAsPassword(true);
             sceneCss.add(passwordTxt);
 
@@ -84,7 +84,6 @@
             return [r,g,b];
         }
         console.log(hexToRGB("0xFF0000"))
-
 */
 
     </script>
