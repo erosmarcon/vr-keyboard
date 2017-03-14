@@ -1,7 +1,8 @@
 # VRKeyboard
 
-
-![Screenshot](https://github.com/erosmarcon/VRKeyboard/blob/master/images/screenshots/VRKeyboard-shot-1.png)
+<p align="center">
+  <img src="https://github.com/erosmarcon/VRKeyboard/blob/master/images/screenshots/VRKeyboard-shot-1.png"/>
+</p>
 
 ## What is
 A keyboard input based on [THREE.js](https://threejs.org/) for virtual reality experiences or just as an alternative to the standard on-screen keyboard on touch devices.
