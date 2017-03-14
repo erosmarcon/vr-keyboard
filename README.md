@@ -12,7 +12,8 @@ Include THREE.js library, THREECSS3DRenderer and VRKeyboard:
     <script src="js/VRKeyboard.js"></script>
 
 
-Create a basic 3D scene and render with CSS3DRenderer
+Create a basic 3D scene and render with CSS3DRenderer:
+
     <script>
         var container;
         var camera;
