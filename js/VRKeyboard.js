@@ -507,7 +507,7 @@ VRKeyboard = function () {
             this.target.focus();
             this.target.input.setAttribute("value", this.referenceText);
             this.target.input.setSelectionRange(this.referenceText.length, this.referenceText.length);
-            this.target.input.scrollLeft=this.target.scrollWidth;
+            this.target.input.scrollLeft=this.target.input.scrollWidth;
         }
 
     }
