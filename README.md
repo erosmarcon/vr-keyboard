@@ -55,7 +55,7 @@ Create a basic 3D scene and render with CSS3DRenderer:
 
 ## How to use
 
-###Basic:
+### Basic:
 
 Instantiate a VRKeyboard and listen for update event:
 
@@ -65,4 +65,4 @@ Instantiate a VRKeyboard and listen for update event:
     })
     sceneCss.add(vrKeyboard)
 
-###With text inputs:
+### With text inputs:
