@@ -15,7 +15,7 @@
         var scene, renderer;
         var controls;
         var vrKeyboard;
-        var usernameTxt, passwordTxt;
+        var searchTxt;
 
         function init(element)
         {
@@ -45,30 +45,26 @@
             vrKeyboard=new VRKeyboard()
             vrKeyboard.addEventListener('keypress' , function(e){
                 console.log(e.code)
-                var username=usernameTxt.getValue()?"\'"+usernameTxt.getValue()+"\'":"empty";
-                var password=passwordTxt.getValue().length>0?passwordTxt.getValue():"empty"
-                document.getElementById("msg").innerHTML="Your username is "+username+" and your password is: "+passwordTxt.getValue().length+" characters";
+                var search=searchTxt.getValue()?"You are searching for \' "+searchTxt.getValue()+" \'":"Please type a search keyword";
+
+                document.getElementById("msg").innerHTML=search;
             })
             vrKeyboard.rotation.x-=0.5
             vrKeyboard.position.z+=200
             scene.add(vrKeyboard);
 
 
-            usernameTxt=new VRTextInput('user');
-            usernameTxt.position.set(0,300,0);
-            usernameTxt.setPlaceholder('username')
-            usernameTxt.setWidth(400);
-            scene.add(usernameTxt);
 
-            passwordTxt=new VRTextInput('password');
-            passwordTxt.position.set(0,220,0);
-            passwordTxt.setWidth(400);
-            passwordTxt.setPlaceholder('password')
-            passwordTxt.displayAsPassword(true);
-            scene.add(passwordTxt);
 
-            vrKeyboard.register(usernameTxt)
-            vrKeyboard.register(passwordTxt)
+            searchTxt=new VRTextInput('search');
+            searchTxt.position.set(0,220,0);
+            searchTxt.setWidth(800);
+            searchTxt.setPlaceholder('Search...')
+
+            scene.add(searchTxt);
+
+            vrKeyboard.register(searchTxt)
+
 
         }
 
@@ -91,7 +87,7 @@
     </script>
 </head>
 <body onload="init('container')">
-<div id="msg">Please type a username and password</div>
+<div id="msg">Please type a search keyword</div>
 <div id="container"></div>
 </body>
 </html>
