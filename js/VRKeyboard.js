@@ -690,6 +690,8 @@ VRTextInput = function (name) {
         this.input.setAttribute('name',name);
         //this.input.setAttribute('placeholder',name);
         this.input.setAttribute('value',"");
+        if(this.placeholder)
+            this.input.setAttribute('placeholder',this.placeholder);
 
 
         this.input.style.fontFamily="Helvetica, sans-serif";
@@ -754,6 +756,12 @@ VRTextInput = function (name) {
         this.input.blur();
         this.input.style.boxShadow="0px 0px 12px rgba("+this.backgroundColor.toString()+",0.5)";
         this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.2)";
+    }
+
+    this.setPlaceholder=function(value)
+    {
+        this.placeholder=value;
+        this.build()
     }
 
 

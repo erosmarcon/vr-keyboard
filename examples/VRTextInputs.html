@@ -15,7 +15,7 @@
         var scene, renderer;
         var controls;
         var vrKeyboard;
-
+        var usernameTxt, passwordTxt;
 
         function init(element)
         {
@@ -45,10 +45,30 @@
             vrKeyboard=new VRKeyboard()
             vrKeyboard.addEventListener('keypress' , function(e){
                 console.log(e.code)
-                document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key"
+                var username=usernameTxt.getValue()?"\'"+usernameTxt.getValue()+"\'":"empty";
+                var password=passwordTxt.getValue().length>0?passwordTxt.getValue():"empty"
+                document.getElementById("msg").innerHTML="Your username is "+username+" and your password is: "+passwordTxt.getValue().length+" characters";
             })
             vrKeyboard.rotation.x-=0.5
-            scene.add(vrKeyboard)
+            vrKeyboard.position.z+=200
+            scene.add(vrKeyboard);
+
+
+            usernameTxt=new VRTextInput('user');
+            usernameTxt.position.set(0,300,0);
+            usernameTxt.setPlaceholder('username')
+            usernameTxt.setWidth(400);
+            scene.add(usernameTxt);
+
+            passwordTxt=new VRTextInput('password');
+            passwordTxt.position.set(0,220,0);
+            passwordTxt.setWidth(400);
+            passwordTxt.setPlaceholder('password')
+            passwordTxt.displayAsPassword(true);
+            scene.add(passwordTxt);
+
+            vrKeyboard.register(usernameTxt)
+            vrKeyboard.register(passwordTxt)
 
         }
 
@@ -71,7 +91,7 @@
     </script>
 </head>
 <body onload="init('container')">
-<div id="msg">Press any key</div>
+<div id="msg">Please type a username and password</div>
 <div id="container"></div>
 </body>
 </html>

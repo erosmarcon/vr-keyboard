@@ -76,8 +76,8 @@ Add and layout VRTextInput instances as necessary, for example:
     scene.add(usernameTxt);
 
     var passwordTxt=new VRTextInput('password');
-    passwordTxt.position.set(0,220,0);
     passwordTxt.setWidth(400);
+    passwordTxt.position.set(0,220,0);
     passwordTxt.displayAsPassword(true);
     scene.add(passwordTxt);
 
@@ -108,4 +108,7 @@ If you want to go more in depth on styling and customizing, you can edit any css
 
 ## Examples
 
-WIP
+* [Basic](http://www.uxvision.it/projects/VRKeyboard/examples/Basic.html)
+* [TextInput](http://www.uxvision.it/projects/VRKeyboard/examples/VRTextInputs.html)
+* Styling
+* Complex 3D Scene
