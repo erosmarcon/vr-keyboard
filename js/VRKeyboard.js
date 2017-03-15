@@ -32,7 +32,7 @@ VRKey = function (keyboard, code, type) {
     {
 
         this.style.boxShadow="0px 0px 12px rgba("+self.keyboard.keyColor+",0.75)";
-        this.style.border="1px solid rgba("+self.keyboard.keyColor+",0.75)";
+        this.style.border="1px solid rgba("+self.keyboard.labelColor+",0.75)";
     })
 
     element.addEventListener("mouseout", function ()
@@ -49,10 +49,10 @@ VRKey = function (keyboard, code, type) {
     element.style.width = this.style.width+ 'px';
     element.style.height = this.style.height + 'px';
     element.style.boxShadow="0px 0px 12px rgba("+this.keyboard.keyColor.toString()+",0.5)";
-    element.style.border="1px solid rgba("+this.keyboard.keyColor+",0.25)";
+    element.style.border="1px solid rgba("+this.keyboard.keyColor+",1)";
     element.style.textAlign="center";
     element.style.cursor="default";
-    element.style.backgroundColor = "rgba("+this.keyboard.keyColor+",0.5)";
+    element.style.backgroundColor = "rgba("+this.keyboard.keyColor+",0.8)";
     if(this.keyboard.rounded)
         element.style.borderRadius="24px";
 
@@ -67,7 +67,7 @@ VRKey = function (keyboard, code, type) {
     label.style.fontSize="20px";
     label.style.fontWeight="normal";
     label.style.color="rgba("+this.keyboard.labelColor+",0.75)";
-    label.style.textShadow="0 0 10px rgba("+this.keyboard.keyColor.toString()+",0.95)";
+    label.style.textShadow="0 0 10px rgba("+this.keyboard.labelColor.toString()+",0.95)";
 
     label.textContent = code;
     element.appendChild(label);
@@ -551,8 +551,8 @@ VRKeyboard = function () {
         //Background Pad
         var bg = document.createElement('div');
 
-        bg.style.boxShadow="0px 0px 12px rgba("+this.keyColor.toString()+",0.5)";
-        bg.style.border="1px solid rgba("+this.keyColor.toString()+",0.2)";
+        bg.style.boxShadow="0px 0px 12px rgba("+this.keyColor.toString()+",0.6)";
+        bg.style.border="1px solid rgba("+this.keyColor.toString()+",0.4)";
         bg.style.cursor="default";
         bg.addEventListener("click", function (e)
         {
@@ -710,9 +710,9 @@ VRTextInput = function (name) {
         this.input.style.fontWeight="normal";
         this.input.style.color="rgba("+this.textColor.toString()+",0.75)";
         this.input.style.textShadow="0 0 10px rgba("+this.backgroundColor.toString()+",0.95)";
-        this.input.style.backgroundColor="rgba("+this.backgroundColor.toString()+",0.5)";
+        this.input.style.backgroundColor="rgba("+this.backgroundColor.toString()+",0.8)";
         this.input.style.boxShadow="0px 0px 12px rgba("+this.backgroundColor.toString()+",0.5)";
-        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.7)";
+        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",1)";
         this.input.style.padding="20px";
         this.input.style.outline="none";
         if(this.width)
@@ -758,7 +758,7 @@ VRTextInput = function (name) {
     {
         this.input.focus();
         this.input.style.boxShadow="0px 0px 12px rgba("+this.textColor.toString()+",0.75)";
-        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.75)";
+        this.input.style.border="1px solid rgba("+this.textColor.toString()+",0.75)";
     }
 
     this.blur=function()
