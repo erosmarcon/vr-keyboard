@@ -100,7 +100,7 @@ Example:
 Same logic applies to VRTextInput styling:
 
     //Red background with yellow text and rounded border
-    vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
+    usernameTxt.setStyle("0xD90000", "0xFFD24D", true);
 
 If you want to go more in depth on styling and customizing, you can edit any css rule in javascript source code to suit your needs.
 
