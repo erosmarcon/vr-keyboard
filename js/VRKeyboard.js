@@ -639,7 +639,7 @@ VRKeyboard = function () {
     {
         var self=this;
         field.addEventListener("click", function (e) {
-            e.stopPropagation();
+            console.log("CC")
             self.setTarget(field);
         })
         this.fields.push(field);
@@ -684,12 +684,19 @@ VRTextInput = function (name) {
 
     this.build=function()
     {
+        var self=this;
         this.clear();
+        if(this.input && this.getValue())
+            var value=this.getValue();
+
         this.input = document.createElement("input");
         this.input.setAttribute("type", "text");
         this.input.setAttribute('name',name);
-        //this.input.setAttribute('placeholder',name);
-        this.input.setAttribute('value',"");
+
+        if(value)
+            this.input.setAttribute('value',value);
+        else
+            this.input.setAttribute('value','');
         if(this.placeholder)
             this.input.setAttribute('placeholder',this.placeholder);
 
@@ -728,6 +735,12 @@ VRTextInput = function (name) {
 
         })
 
+        this.input.addEventListener("click", function (e) {
+            e.preventDefault()
+            e.stopPropagation();
+            self.dispatchEvent({type:"click"})
+        })
+
         this.CSS3Dobject = new THREE.CSS3DObject(this.input);
         this.add(this.CSS3Dobject);
 
@@ -739,10 +752,7 @@ VRTextInput = function (name) {
         return this.input.getAttribute("value")
     }
     
-    this.addEventListener=function(event, listener)
-    {
-        this.input.addEventListener(event, listener)
-    }
+
 
     this.focus=function()
     {

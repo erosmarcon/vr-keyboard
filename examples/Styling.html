@@ -45,11 +45,8 @@
             vrKeyboard=new VRKeyboard()
             vrKeyboard.addEventListener('keypress' , function(e){
                 console.log(e.code)
-                var search=searchTxt.getValue()?"You are searching for \' "+searchTxt.getValue()+" \'":"Please type a search keyword";
-
-                document.getElementById("msg").innerHTML=search;
             })
-
+            
             vrKeyboard.rotation.x-=0.5
             vrKeyboard.position.z+=200
             scene.add(vrKeyboard);
@@ -80,10 +77,40 @@
         }
 
 
+        function changeStyle(style)
+        {
+            switch(style)
+            {
+                case 1:
+                    vrKeyboard.setStyle("0x333333", "0xD2FF4D", false)
+                    searchTxt.setStyle("0x333333", "0xD2FF4D", false)
+                    break;
+
+                case 2:
+                    vrKeyboard.setStyle("0xFFFFFF", "0x2693FF", false)
+                    searchTxt.setStyle("0xFFFFFF", "0x2693FF", false)
+                    break;
+
+                case 3:
+                    vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
+                    searchTxt.setStyle("0xD90000", "0xFFD24D", true);
+                    break;
+
+            }
+        }
+
+
     </script>
 </head>
 <body onload="init('container')">
-<div id="msg">Please type a search keyword</div>
+
 <div id="container"></div>
+<div id="button-box">
+    <div class="style-button" id="style1" onclick="changeStyle(1)">Style 1</div>
+    <div class="style-button" id="style2" onclick="changeStyle(2)">Style 2</div>
+    <div class="style-button" id="style3" onclick="changeStyle(3)">Style 3</div>
+</div>
+
+
 </body>
 </html>

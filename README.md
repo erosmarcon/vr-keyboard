@@ -110,5 +110,5 @@ If you want to go more in depth on styling and customizing, you can edit any css
 
 * [Basic](http://www.uxvision.it/projects/VRKeyboard/examples/Basic.html)
 * [TextInput](http://www.uxvision.it/projects/VRKeyboard/examples/VRTextInputs.html)
-* Styling
+* [Styling](http://www.uxvision.it/projects/VRKeyboard/examples/Styling.html)
 * Complex 3D Scene
