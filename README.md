@@ -86,7 +86,7 @@ Register VRTextInput instances to the VRKeyboard:
       vrKeyboard.register(usernameTxt);
       vrKeyboard.register(passwordTxt);
 
-Get the VRTextInput value:
+Focus, type something and then get the VRTextInput value:
 
     console.log(usernameTxt.getValue());
 
