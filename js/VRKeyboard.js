@@ -676,7 +676,7 @@ VRTextInput = function (name) {
     this.init=function()
     {
 
-        this.backgroundColor=this.backgroundColor=this.hexToRGB("0x000000");
+        this.backgroundColor=this.hexToRGB("0x666666");
         this.textColor=this.hexToRGB("0xFFFFFF");
         this.build()
     }
@@ -703,7 +703,7 @@ VRTextInput = function (name) {
         this.input.style.textShadow="0 0 10px rgba("+this.backgroundColor.toString()+",0.95)";
         this.input.style.backgroundColor="rgba("+this.backgroundColor.toString()+",0.5)";
         this.input.style.boxShadow="0px 0px 12px rgba("+this.backgroundColor.toString()+",0.5)";
-        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.2)";
+        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.7)";
         this.input.style.padding="20px";
         this.input.style.outline="none";
         if(this.width)
