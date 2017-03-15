@@ -639,7 +639,6 @@ VRKeyboard = function () {
     {
         var self=this;
         field.addEventListener("click", function (e) {
-            console.log("CC")
             self.setTarget(field);
         })
         this.fields.push(field);

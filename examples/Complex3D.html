@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VRKeyboard</title>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+    <script src="../libs/three.min.js"></script>
+    <script src="../js/threejs/renderers/CSS3DRenderer.js"></script>
+    <script src="../js/threejs/controls/TrackballControls.js"></script>
+    <script src="../js/VRKeyboard.js"></script>
+    <script>
+        var container;
+        var camera;
+
+        var scene, renderer;
+        var controls;
+        var vrKeyboard;
+        var searchTxt;
+
+        function init(element)
+        {
+            container= document.getElementById(element);
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
+
+            scene = new THREE.Scene();
+
+            renderer = new THREE.CSS3DRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.top = 0;
+            container.appendChild(renderer.domElement);
+
+            controls = new THREE.TrackballControls(camera, renderer.domElement);
+            controls.maxPolarAngle = Math.PI * 0.5;
+            controls.minDistance = 100;
+            controls.maxDistance = 25000;
+
+            camera.position.set(0, 0, 1500);
+            camera.lookAt(new THREE.Vector3(0,0,0))
+
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+
+            //Keyboard
+            vrKeyboard=new VRKeyboard()
+            vrKeyboard.addEventListener('keypress' , function(e){
+                console.log(e.code)
+            })
+            
+            vrKeyboard.rotation.x-=0.5
+            vrKeyboard.position.z+=200
+            scene.add(vrKeyboard);
+
+
+            searchTxt=new VRTextInput('search');
+            searchTxt.position.set(0,220,0);
+            searchTxt.setWidth(800);
+            searchTxt.setPlaceholder('Search...')
+            scene.add(searchTxt);
+            vrKeyboard.register(searchTxt)
+
+        }
+
+        function onWindowResize()
+        {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate()
+        {
+
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+
+        function changeStyle(style)
+        {
+            switch(style)
+            {
+                case 1:
+                    vrKeyboard.setStyle("0x333333", "0xD2FF4D", false)
+                    searchTxt.setStyle("0x333333", "0xD2FF4D", false)
+                    break;
+
+                case 2:
+                    vrKeyboard.setStyle("0xFFFFFF", "0x0080FF", false)
+                    searchTxt.setStyle("0xFFFFFF", "0x0080FF", false)
+                    break;
+
+                case 3:
+                    vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
+                    searchTxt.setStyle("0xD90000", "0xFFD24D", true);
+                    break;
+
+            }
+        }
+
+
+    </script>
+</head>
+<body onload="init('container')">
+
+<div id="container"></div>
+<div id="button-box">
+    <div class="style-button" id="style1" onclick="changeStyle(1)">Style 1</div>
+    <div class="style-button" id="style2" onclick="changeStyle(2)">Style 2</div>
+    <div class="style-button" id="style3" onclick="changeStyle(3)">Style 3</div>
+</div>
+
+
+</body>
+</html>
