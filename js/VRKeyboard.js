@@ -706,6 +706,8 @@ VRTextInput = function (name) {
         this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.2)";
         this.input.style.padding="20px";
         this.input.style.outline="none";
+        if(this.width)
+            this.input.style.width=this.width+"px";
         this.input.onfocus=function()
         {
 
@@ -734,8 +736,7 @@ VRTextInput = function (name) {
     {
         return this.input.getAttribute("value")
     }
-
-
+    
     this.addEventListener=function(event, listener)
     {
         this.input.addEventListener(event, listener)
@@ -764,9 +765,12 @@ VRTextInput = function (name) {
         this.build();
     }
 
-
-
-
+    this.setWidth=function(value)
+    {
+        this.width=value;
+        this.build();
+    }
+    
     this.displayAsPassword=function(value)
     {
         if(value)
@@ -774,7 +778,6 @@ VRTextInput = function (name) {
         else
             this.input.setAttribute("type", "text");
     }
-
     this.init();
 
 

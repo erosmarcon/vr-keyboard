@@ -68,14 +68,16 @@ Instantiate a VRKeyboard and listen for keypress event:
 
 ### With VRTextInput/s in 3D space:
 
-Add VRTextInput instances as necessary, for example:
+Add and layout VRTextInput instances as necessary, for example:
 
     var usernameTxt=new VRTextInput('user');
+    usernameTxt.setWidth(400);
     usernameTxt.position.set(0,300,0);
     scene.add(usernameTxt);
 
     var passwordTxt=new VRTextInput('password');
     passwordTxt.position.set(0,220,0);
+    passwordTxt.setWidth(400);
     passwordTxt.displayAsPassword(true);
     scene.add(passwordTxt);
 
