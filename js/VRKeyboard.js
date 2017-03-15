@@ -475,6 +475,8 @@ VRKeyboard = function () {
                 //dispatchEvent(new KeyBoardEvent(KeyBoardEvent.UPDATE, code));
 
         }
+
+        this.dispatchEvent({type: 'keypress', code:code});
     }
 
     this.update=function(code)
@@ -652,30 +654,81 @@ VRKeyboard.prototype = Object.assign(Object.create(THREE.Group.prototype), {
 });
 
 
+
 VRTextInput = function (name) {
 
     THREE.Group.apply(this);
 
-    this.input = document.createElement("input");
-    this.input.setAttribute("type", "text");
-    this.input.setAttribute('name',name);
-    this.input.setAttribute('placeholder',name);
-    this.input.setAttribute('value',"");
+    this.hexToRGB=function (hex){
+        var r = hex >> 16;
+        var g = hex >> 8 & 0xFF;
+        var b = hex & 0xFF;
+        return [r,g,b];
+    }
 
-    //
-    this.input.style.fontFamily="Helvetica, sans-serif";
-    this.input.style.position="absolute";
-    this.input.style.top="18px";
-    this.input.style.left="0px";
-    this.input.style.right="0px";
-    this.input.style.fontSize="20px";
-    this.input.style.fontWeight="normal";
-    this.input.style.color="rgba(255,255,255,0.75)";
-    this.input.style.textShadow="0 0 10px rgba(0,255,255,0.95)";
-    this.input.style.backgroundColor="rgba(0,127,127,0.5)";
-    this.input.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
-    this.input.style.border="1px solid rgba(127,255,255,0.2)";
-    this.input.style.padding="20px";
+
+    this.clear = function ()
+    {
+        if(this.CSS3Dobject)
+            this.remove(this.CSS3Dobject);
+    }
+
+    this.init=function()
+    {
+
+        this.backgroundColor=this.backgroundColor=this.hexToRGB("0x000000");
+        this.textColor=this.hexToRGB("0xFFFFFF");
+        this.build()
+    }
+
+
+    this.build=function()
+    {
+        this.clear();
+        this.input = document.createElement("input");
+        this.input.setAttribute("type", "text");
+        this.input.setAttribute('name',name);
+        //this.input.setAttribute('placeholder',name);
+        this.input.setAttribute('value',"");
+
+
+        this.input.style.fontFamily="Helvetica, sans-serif";
+        this.input.style.position="absolute";
+        this.input.style.top="18px";
+        this.input.style.left="0px";
+        this.input.style.right="0px";
+        this.input.style.fontSize="20px";
+        this.input.style.fontWeight="normal";
+        this.input.style.color="rgba("+this.textColor.toString()+",0.75)";
+        this.input.style.textShadow="0 0 10px rgba("+this.backgroundColor.toString()+",0.95)";
+        this.input.style.backgroundColor="rgba("+this.backgroundColor.toString()+",0.5)";
+        this.input.style.boxShadow="0px 0px 12px rgba("+this.backgroundColor.toString()+",0.5)";
+        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.2)";
+        this.input.style.padding="20px";
+        this.input.style.outline="none";
+        this.input.onfocus=function()
+        {
+
+        }
+
+        this.input.onblur=function()
+        {
+
+        }
+
+        if(this.rounded)
+            this.input.style.borderRadius="24px";
+
+        this.input.addEventListener("keydown", function (e) {
+            e.preventDefault()
+
+        })
+
+        this.CSS3Dobject = new THREE.CSS3DObject(this.input);
+        this.add(this.CSS3Dobject);
+
+    }
+
 
     this.getValue=function()
     {
@@ -690,24 +743,29 @@ VRTextInput = function (name) {
 
     this.focus=function()
     {
-        this.input.focus()
-        this.input.style.boxShadow="0px 0px 12px rgba(0,255,255,0.75)";
-        this.input.style.border="1px solid rgba(127,255,255,0.75)";
-
+        this.input.focus();
+        this.input.style.boxShadow="0px 0px 12px rgba("+this.textColor.toString()+",0.75)";
+        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.75)";
     }
 
     this.blur=function()
     {
-        this.input.blur()
-        this.input.style.boxShadow="0px 0px 12px rgba(0,255,255,0.5)";
-        this.input.style.border="1px solid rgba(127,255,255,0.2)";
+        this.input.blur();
+        this.input.style.boxShadow="0px 0px 12px rgba("+this.backgroundColor.toString()+",0.5)";
+        this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",0.2)";
     }
 
-    this.input.addEventListener("keydown", function (e) {
 
-        e.preventDefault()
+    this.setStyle=function(backgroundColor, textColor, rounded)
+    {
+        this.backgroundColor=this.hexToRGB(backgroundColor);
+        this.textColor=this.hexToRGB(textColor);
+        this.rounded=rounded;
+        this.build();
+    }
 
-    })
+
+
 
     this.displayAsPassword=function(value)
     {
@@ -717,14 +775,14 @@ VRTextInput = function (name) {
             this.input.setAttribute("type", "text");
     }
 
-    this.CSS3Dobject = new THREE.CSS3DObject(this.input);
-    this.add(this.CSS3Dobject);
+    this.init();
+
+
 }
 
 VRTextInput.prototype = Object.assign(Object.create(THREE.Group.prototype), {
     constructor: VRTextInput
 });
-
 
 
 

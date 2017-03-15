@@ -58,10 +58,10 @@ Create a basic 3D scene and render with CSS3DRenderer:
 
 ### Basic:
 
-Instantiate a VRKeyboard and listen for update event:
+Instantiate a VRKeyboard and listen for keypress event:
 
     var vrKeyboard=new VRKeyboard()
-    vrKeyboard.addEventListener('update' , function(e){
+    vrKeyboard.addEventListener('keypress' , function(e){
         console.log(e.code)
     })
     scene.add(vrKeyboard)
@@ -90,15 +90,20 @@ Get the VRTextInput value:
 
 ## How to style
 
-VRKeyboard exposes a setStyle() method for basic customization. It accepts three arguments: key color (hex), label color (hex) and rounded key corners (boolean).
+VRKeyboard exposes a setStyle() method for basic customization. It accepts three arguments: key color (hex), label color (hex) and rounded keys (boolean).
 
 Example:
 
     //Red base with yellow labels and rounded keys
     vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
 
+Same logic applies to VRTextInput styling:
+
+    //Red background with yellow text and rounded border
+    vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
+
 If you want to go more in depth on styling and customizing, you can edit any css rule in javascript source code to suit your needs.
 
 ## Examples
 
-TODO
+WIP

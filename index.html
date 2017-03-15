@@ -53,11 +53,14 @@
 
             usernameTxt=new VRTextInput('user');
             usernameTxt.position.set(0,300,0);
+            usernameTxt.setStyle("0xD90000", "0xFFD24D", true);
             sceneCss.add(usernameTxt);
 
             passwordTxt=new VRTextInput('password');
             passwordTxt.position.set(0,220,0);
+            passwordTxt.setStyle("0xD90000", "0xFFD24D", true);
             passwordTxt.displayAsPassword(true);
+            //passwordTxt.input.style.width="500px"
             sceneCss.add(passwordTxt);
 
             vrKeyboard.register(usernameTxt)
