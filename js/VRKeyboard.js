@@ -699,7 +699,6 @@ VRTextInput = function (name) {
         if(this.placeholder)
             this.input.setAttribute('placeholder',this.placeholder);
 
-
         this.input.style.fontFamily="Helvetica, sans-serif";
         this.input.style.position="absolute";
         this.input.style.top="18px";
@@ -714,11 +713,14 @@ VRTextInput = function (name) {
         this.input.style.border="1px solid rgba("+this.backgroundColor.toString()+",1)";
         this.input.style.padding="20px";
         this.input.style.outline="none";
+        this.input.readonly=true;
+        this.input.setAttribute('readonly',"true");
         if(this.width)
             this.input.style.width=this.width+"px";
-        this.input.onfocus=function()
+        this.input.onfocus=function(e)
         {
-
+            e.preventDefault();
+            e.stopPropagation();;
         }
 
         this.input.onblur=function()
