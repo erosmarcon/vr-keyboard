@@ -53,6 +53,7 @@ VRKey = function (keyboard, code, type) {
     element.style.textAlign="center";
     element.style.cursor="default";
     element.style.backgroundColor = "rgba("+this.keyboard.keyColor+",0.8)";
+    element.style.opacity=1
     if(this.keyboard.rounded)
         element.style.borderRadius="24px";
 
@@ -622,6 +623,9 @@ VRKeyboard = function () {
         this.keyholder.position.set(0, H/2, 0);
         this.add(this.keyholder);
 
+        console.log(bg.style.height)
+        console.log(bg.style.width)
+
 
     }
 
@@ -750,10 +754,14 @@ VRTextInput = function (name) {
 
     this.getValue=function()
     {
-        return this.input.getAttribute("value")
+        return this.input.getAttribute("value");
+    }
+
+    this.setValue=function(value)
+    {
+        this.input.setAttribute("value", value);
     }
     
-
 
     this.focus=function()
     {
