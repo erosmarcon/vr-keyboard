@@ -50,6 +50,10 @@
             rendererGl.domElement.style.zIndex = 1;
             rendererGl.domElement.style.top = 0;
             rendererGl.domElement.style.pointerEvents = 'none';
+            rendererGl.shadowMap.enabled=true;
+            rendererGl.shadowMap.type = THREE.PCFSoftShadowMap;
+            rendererGl.gammaInput = true;
+            rendererGl.gammaOutput = true;
             rendererCss.domElement.appendChild(rendererGl.domElement);
 
             container.appendChild(rendererCss.domElement);
@@ -86,13 +90,15 @@
 
             //keyboard mask
             var bgGeo=new THREE.PlaneGeometry(830,320, 32)
-            var bgMat=new THREE.MeshBasicMaterial({color:0x000000});
+            var bgMat=new THREE.MeshPhongMaterial({color:0x000000});
             bgMat.blending=THREE.NoBlending;
             bgMat.opacity = 0.0;
             bgMat.transparent=true;
-            var bg=new THREE.Mesh(bgGeo, bgMat)
+            var bg=new THREE.Mesh(bgGeo, bgMat);
             bg.rotation.x-=0.9;
             bg.position.z+=200;
+            bg.castShadow = true;
+            bg.receiveShadow = true;
             sceneGl.add(bg)
 
             searchTxt=new VRTextInput('search');
@@ -103,7 +109,7 @@
             vrKeyboard.register(searchTxt)
 
             //searchTxt mask
-            var txtGeo=new THREE.PlaneGeometry(840,60, 32)
+            var txtGeo=new THREE.PlaneGeometry(840,60, 32);
             var txtMat=new THREE.MeshBasicMaterial({color:0x000000});
             txtMat.blending=THREE.NoBlending;
             txtMat.opacity = 0.0;
@@ -117,14 +123,38 @@
             sceneGl.add(holder);
 
             var floorGeo=new THREE.PlaneGeometry(5000,5000, 32 );
-            var floorMat=new THREE.MeshBasicMaterial( {color: 0x333333} );
-            floorMat.blending=THREE.NoBlending;
-            floorMat.opacity = 0.0;
-            floorMat.transparent=true;
+            var floorMat=new THREE.MeshPhongMaterial( {color: 0x333333} );
+            //floorMat.blending=THREE.NoBlending;
+            //floorMat.opacity = 0.0;
+            //floorMat.transparent=true;
             floor=new THREE.Mesh( floorGeo, floorMat );
             floor.rotation.x=-Math.PI*.5;
             floor.position.y-=200
+            floor.castShadow = true;
+            floor.receiveShadow = true;
             sceneGl.add(floor);
+
+
+            var spotLight = new THREE.SpotLight( 0xffffff, 5.0 );
+            spotLight.position.set( 0, 4000, 0 );
+
+            spotLight.castShadow = true;
+
+            spotLight.shadow.mapSize.width = 1024;
+            spotLight.shadow.mapSize.height = 1024;
+
+            spotLight.angle = 1;
+            spotLight.penumbra = 0.1;
+            spotLight.decay = 2;
+            spotLight.distance = 6000;
+
+
+
+            var ambient = new THREE.AmbientLight( 0x111111 );
+
+
+            sceneGl.add( spotLight );
+            sceneGl.add( ambient );
 
         }
 
@@ -183,24 +213,26 @@
             var geometry = new THREE.CubeGeometry( 300, 300, 10 );
 
             var materials=[
-                new THREE.MeshBasicMaterial( { color: 0x666666 , blending:THREE.NoBlending, opacity:0.0, transparent:true} ), // right
-                new THREE.MeshBasicMaterial( { color: 0x666666 , blending:THREE.NoBlending, opacity:0.0, transparent:true} ), // left
-                new THREE.MeshBasicMaterial( { color: 0x666666 , blending:THREE.NoBlending, opacity:0.0, transparent:true} ), // top
-                new THREE.MeshBasicMaterial( { color: 0x666666 , blending:THREE.NoBlending, opacity:0.0, transparent:true} ), // bottom
-                new THREE.MeshBasicMaterial( { map:albums[currentPoint].texture , blending:THREE.NoBlending, opacity:0.0, transparent:true} ), // back
-                new THREE.MeshBasicMaterial( { color: 0x333333, blending:THREE.NoBlending, opacity:0.0, transparent:true} )  // front
+                new THREE.MeshPhongMaterial( { color: 0x666666} ), // right
+                new THREE.MeshPhongMaterial( { color: 0x666666} ), // left
+                new THREE.MeshPhongMaterial( { color: 0x666666} ), // top
+                new THREE.MeshPhongMaterial( { color: 0x666666} ), // bottom
+                new THREE.MeshPhongMaterial( { map:albums[currentPoint].texture } ), // back
+                new THREE.MeshPhongMaterial( { color: 0x333333} )  // front
             ]
 
             var material = new THREE.MultiMaterial( materials );
             material.map=albums[currentPoint].texture;
-            material.blending=THREE.NoBlending
-            material.opacity = 0.0;
-            material.transparent=true;
+            //material.blending=THREE.NoBlending
+            //material.opacity = 0.0;
+            //material.transparent=true;
             material.needsUpdate=true;
 
             var plane = new THREE.Mesh( geometry, material );
             plane.position.set(endPos.x, endPos.y, endPos.z)
             plane.lookAt(new THREE.Vector3(0,posY,0))//todo check Y pos
+            plane.castShadow=true;
+            plane.receiveShadow=true;
             plane.scale.set(0, 0, 0)
             holder.add( plane );
 

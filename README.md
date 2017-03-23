@@ -9,14 +9,13 @@ A keyboard input based on [THREE.js](https://threejs.org/) for virtual reality e
 
 ## How to setup
 
-Include THREE.js library, THREECSS3DRenderer and VRKeyboard:
+Include THREE.js library and VRKeyboard:
 
     <script src="libs/three.min.js"></script>
-    <script src="js/threejs/renderers/CSS3DRenderer.js"></script>
     <script src="js/VRKeyboard.js"></script>
 
 
-Create a basic 3D scene and render with CSS3DRenderer:
+Create a basic 3D scene:
 
     <script>
         var container;
@@ -27,7 +26,7 @@ Create a basic 3D scene and render with CSS3DRenderer:
             container= document.getElementById(element);
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
             scene = new THREE.Scene();
-            renderer = new THREE.CSS3DRenderer();
+            renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.domElement.style.position = 'absolute';
             renderer.domElement.style.top = 0;
