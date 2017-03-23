@@ -124,6 +124,11 @@
             //scene.add(bg)
 
 
+            var cylGeo = new THREE.CylinderBufferGeometry( 3000, 3000, 3000, 64, 1, true, 0, Math.PI*2);
+            var cylMat = new THREE.MeshPhongMaterial( {color:0x00B200, side: THREE.DoubleSide} );
+            var cyl = new THREE.Mesh( cylGeo, cylMat );
+            scene.add( cyl );
+
 
             //searchTxt mask
             var txtGeo=new THREE.PlaneGeometry(840,60, 32);
@@ -139,11 +144,9 @@
             holder=new THREE.Group();
             scene.add(holder);
 
-            var floorGeo=new THREE.PlaneGeometry(5000,5000, 32 );
-            var floorMat=new THREE.MeshPhongMaterial( {color: 0x333333} );
-            //floorMat.blending=THREE.NoBlending;
-            //floorMat.opacity = 0.0;
-            //floorMat.transparent=true;
+            var floorGeo=new THREE.PlaneGeometry(10000,10000, 32 );
+            var floorMat=new THREE.MeshPhongMaterial( {color: 0x008C00} );
+
             floor=new THREE.Mesh( floorGeo, floorMat );
             floor.rotation.x=-Math.PI*.5;
             floor.position.y-=200
