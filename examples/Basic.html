@@ -5,7 +5,6 @@
     <title>VRKeyboard</title>
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
     <script src="../libs/three.min.js"></script>
-    <script src="../js/threejs/renderers/CSS3DRenderer.js"></script>
     <script src="../js/threejs/controls/TrackballControls.js"></script>
     <script src="../js/VRKeyboard.js"></script>
     <script>
@@ -20,11 +19,13 @@
         function init(element)
         {
             container= document.getElementById(element);
+
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
 
             scene = new THREE.Scene();
 
-            renderer = new THREE.CSS3DRenderer();
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setClearColor( 0x333333, 0);
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.domElement.style.position = 'absolute';
             renderer.domElement.style.top = 0;
@@ -39,16 +40,13 @@
             camera.lookAt(new THREE.Vector3(0,0,0))
 
             window.addEventListener('resize', onWindowResize, false);
-            animate();
 
-            //Keyboard
-            vrKeyboard=new VRKeyboard()
-            vrKeyboard.addEventListener('keypress' , function(e){
+            vrKeyboard=new VRKeyboard(scene, camera, renderer)
+            vrKeyboard.addEventListener('keydown' , function(e){
                 console.log(e.code)
                 document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key"
             })
-            vrKeyboard.rotation.x-=0.5
-            scene.add(vrKeyboard)
+            animate();
 
         }
 
@@ -64,9 +62,9 @@
 
             requestAnimationFrame(animate);
             controls.update();
+            vrKeyboard.update()
             renderer.render(scene, camera);
         }
-
 
     </script>
 </head>
