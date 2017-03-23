@@ -112,3 +112,40 @@ Then type something and get the VRTextInput value, e.g.:
 
 ## How to style
 
+VRKeyboard exposes the following attributes for basic customization:
+
+* keyColor
+* keyOverColor
+* labelColor
+* labelOverColor
+* borderColor
+* borderOverColor
+* borderRadius
+
+Example:
+
+    //Red key background with yellow labels and no rounded corners
+
+    vrKeyboard.keyColor="#D90000";
+    vrKeyboard.labelColor="#FFD24D";
+    vrKeyboard.borderColor="#FFD24D";
+    vrKeyboard.keyOverColor="#B20000";
+    vrKeyboard.labelOverColor="#FFBF00";
+    vrKeyboard.borderOverColor="#D90000";
+    vrKeyboard.borderRadius=0
+
+VRTextInput styling woks similar:
+
+    //Red background with yellow text and no rounded corners
+
+    searchTxt.backgroundColor="#D90000";
+    searchTxt.textColor="#FFD24D"
+    searchTxt.borderColor="#FFD24D";
+    searchTxt.backgroundFocusColor="#B20000";
+    searchTxt.textFocusColor="#FFBF00"
+    searchTxt.borderFocusColor="#FF0000";
+    searchTxt.borderRadius=0
+
+If you want to go more in depth on styling and customizing, have a look at the draw() and drawKey() methods.
+
+
