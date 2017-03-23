@@ -5,7 +5,6 @@
     <title>VRKeyboard</title>
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
     <script src="../libs/three.min.js"></script>
-    <script src="../js/threejs/renderers/CSS3DRenderer.js"></script>
     <script src="../js/threejs/controls/TrackballControls.js"></script>
     <script src="../js/VRKeyboard.js"></script>
     <script>
@@ -15,16 +14,17 @@
         var scene, renderer;
         var controls;
         var vrKeyboard;
-        var searchTxt;
 
         function init(element)
         {
             container= document.getElementById(element);
+
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
 
             scene = new THREE.Scene();
 
-            renderer = new THREE.CSS3DRenderer();
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setClearColor( 0x333333, 0);
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.domElement.style.position = 'absolute';
             renderer.domElement.style.top = 0;
@@ -39,26 +39,78 @@
             camera.lookAt(new THREE.Vector3(0,0,0))
 
             window.addEventListener('resize', onWindowResize, false);
-            animate();
 
-            //Keyboard
-            vrKeyboard=new VRKeyboard()
-            vrKeyboard.addEventListener('keypress' , function(e){
-                console.log(e.code)
+            vrKeyboard=new VRKeyboard(scene, camera, renderer);
+
+            vrKeyboard.addEventListener("keydown", function(e){
+                if(e.code=="a" || e.code=="A")
+                {
+                    vrKeyboard.keyColor="#D90000";
+                    vrKeyboard.labelColor="#FFD24D";
+                    vrKeyboard.borderColor="#FFD24D";
+                    vrKeyboard.keyOverColor="#B20000";
+                    vrKeyboard.labelOverColor="#FFBF00";
+                    vrKeyboard.borderOverColor="#D90000";
+                    vrKeyboard.borderRadius=0
+
+                    searchTxt.backgroundColor="#D90000";
+                    searchTxt.textColor="#FFD24D"
+                    searchTxt.borderColor="#FFD24D";
+                    searchTxt.backgroundFocusColor="#B20000";
+                    searchTxt.textFocusColor="#FFBF00"
+                    searchTxt.borderFocusColor="#FF0000";
+                    searchTxt.borderRadius=0
+                }
+                else if(e.code=="b" || e.code=="B")
+                {
+
+                    vrKeyboard.keyColor="#CCCCCC";
+                    vrKeyboard.labelColor="#0080FF";
+                    vrKeyboard.borderColor="#0080FF";
+                    vrKeyboard.keyOverColor="#FFFFFF";
+                    vrKeyboard.labelOverColor="#006DD9";
+                    vrKeyboard.borderOverColor="#006DD9";
+                    vrKeyboard.borderRadius=16
+
+                    searchTxt.backgroundColor="#CCCCCC";
+                    searchTxt.textColor="#0080FF"
+                    searchTxt.borderColor="#0080FF";
+                    searchTxt.backgroundFocusColor="#FFFFFF";
+                    searchTxt.textFocusColor="#006DD9"
+                    searchTxt.borderFocusColor="#006DD9";
+                    searchTxt.borderRadius=16
+                }
+                else if(e.code=="c" || e.code=="C")
+                {
+                    vrKeyboard.keyColor="#00D96D";
+                    vrKeyboard.labelColor="#006633";
+                    vrKeyboard.borderColor="#006633";
+                    vrKeyboard.keyOverColor="#006633";
+                    vrKeyboard.labelOverColor="#00D96D";
+                    vrKeyboard.borderOverColor="#00D96D";
+                    vrKeyboard.borderRadius=32
+
+                    searchTxt.backgroundColor="#00D96D";
+                    searchTxt.textColor="#006633"
+                    searchTxt.borderColor="#006633";
+                    searchTxt.backgroundFocusColor="#006633";
+                    searchTxt.textFocusColor="#00D96D"
+                    searchTxt.borderFocusColor="#00D96D";
+                    searchTxt.borderRadius=32
+                }
+
             })
-            
-            vrKeyboard.rotation.x-=0.5
-            vrKeyboard.position.z+=200
-            scene.add(vrKeyboard);
 
-
-            searchTxt=new VRTextInput('search');
+            var searchTxt=new VRTextInput();
+            searchTxt.width=400
             searchTxt.position.set(0,220,0);
-            searchTxt.setWidth(800);
-            searchTxt.setPlaceholder('Search...')
-            scene.add(searchTxt);
-            vrKeyboard.register(searchTxt)
+            searchTxt.placeholder="Search..."
 
+            vrKeyboard.addField(searchTxt)
+            vrKeyboard.target=searchTxt
+
+
+            animate();
         }
 
         function onWindowResize()
@@ -70,47 +122,16 @@
 
         function animate()
         {
-
             requestAnimationFrame(animate);
             controls.update();
+            vrKeyboard.update()
             renderer.render(scene, camera);
         }
-
-
-        function changeStyle(style)
-        {
-            switch(style)
-            {
-                case 1:
-                    vrKeyboard.setStyle("0x333333", "0xD2FF4D", false)
-                    searchTxt.setStyle("0x333333", "0xD2FF4D", false)
-                    break;
-
-                case 2:
-                    vrKeyboard.setStyle("0xFFFFFF", "0x0080FF", false)
-                    searchTxt.setStyle("0xFFFFFF", "0x0080FF", false)
-                    break;
-
-                case 3:
-                    vrKeyboard.setStyle("0xD90000", "0xFFD24D", true);
-                    searchTxt.setStyle("0xD90000", "0xFFD24D", true);
-                    break;
-
-            }
-        }
-
 
     </script>
 </head>
 <body onload="init('container')">
-
+<div id="msg">Press A, B, or C key to change styles</div>
 <div id="container"></div>
-<div id="button-box">
-    <div class="style-button" id="style1" onclick="changeStyle(1)">Style 1</div>
-    <div class="style-button" id="style2" onclick="changeStyle(2)">Style 2</div>
-    <div class="style-button" id="style3" onclick="changeStyle(3)">Style 3</div>
-</div>
-
-
 </body>
 </html>
