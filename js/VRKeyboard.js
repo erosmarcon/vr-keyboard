@@ -1103,6 +1103,8 @@ VRTextInput = function () {
         var material = new THREE.MeshBasicMaterial({map: this.texture});
         material.transparent = true;
         var mesh = new THREE.Mesh(new THREE.PlaneGeometry(this.canvas.width, this.canvas.height), material);
+
+
         mesh.position.set(0, 0, 0);
         this.add(mesh);
     }

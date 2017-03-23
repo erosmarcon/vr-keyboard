@@ -58,7 +58,7 @@
 
 
             //
-            camera.position.set(0, 1000, 1500);
+            camera.position.set(0, 500, 1000);
             camera.lookAt(new THREE.Vector3(0,0,0))
 
             window.addEventListener('resize', onWindowResize, false);
@@ -100,45 +100,25 @@
             searchTxt.borderFocusColor="#006DD9";
             searchTxt.borderRadius=16
 
+
+            vrKeyboard.castShadow = true;
+            vrKeyboard.receiveShadow = true;
+
             searchTxt.addEventListener("mousedown", function(e)
             {
                 new TWEEN.Tween( camera.position )
-                        .to( { x: 0, y: 1000, z:1500 }, 1000 )
+                        .to( { x: 0, y: 500, z:1000 }, 1000 )
                         .easing( TWEEN.Easing.Exponential.Out )//.delay(50*currentPoint)
                         .start();
 
             })
 
 
-            //keyboard mask
-            var bgGeo=new THREE.PlaneGeometry(830,320, 32)
-            var bgMat=new THREE.MeshPhongMaterial({color:0x000000});
-            bgMat.blending=THREE.NoBlending;
-            bgMat.opacity = 0.0;
-            bgMat.transparent=true;
-            var bg=new THREE.Mesh(bgGeo, bgMat);
-            bg.rotation.x-=0.9;
-            bg.position.z+=200;
-            bg.castShadow = true;
-            bg.receiveShadow = true;
-            //scene.add(bg)
-
-
-            var cylGeo = new THREE.CylinderBufferGeometry( 3000, 3000, 3000, 64, 1, true, 0, Math.PI*2);
+            var cylGeo = new THREE.CylinderBufferGeometry( 3000, 3000, 5000, 64, 1, true, 0, Math.PI*2);
             var cylMat = new THREE.MeshPhongMaterial( {color:0x00B200, side: THREE.DoubleSide} );
             var cyl = new THREE.Mesh( cylGeo, cylMat );
             scene.add( cyl );
 
-
-            //searchTxt mask
-            var txtGeo=new THREE.PlaneGeometry(840,60, 32);
-            var txtMat=new THREE.MeshBasicMaterial({color:0x000000});
-            txtMat.blending=THREE.NoBlending;
-            txtMat.opacity = 0.0;
-            txtMat.transparent=true;
-            var txt=new THREE.Mesh(txtGeo, txtMat)
-            txt.position.set(0,140,0);
-            //scene.add(txt)
 
 
             holder=new THREE.Group();
@@ -182,7 +162,7 @@
         }
 
         function onWindowResize()
-        {x
+        {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
