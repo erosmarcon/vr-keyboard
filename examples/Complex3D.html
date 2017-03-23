@@ -80,6 +80,8 @@
 
             vrKeyboard.addField(searchTxt)
 
+            vrKeyboard.target=searchTxt;
+
             vrKeyboard.rotation.x-=0.9;
             vrKeyboard.position.z+=200;
 
@@ -101,8 +103,7 @@
             searchTxt.borderRadius=16
 
 
-            vrKeyboard.castShadow = true;
-            vrKeyboard.receiveShadow = true;
+
 
             searchTxt.addEventListener("mousedown", function(e)
             {
