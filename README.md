@@ -148,4 +148,9 @@ VRTextInput styling woks similar:
 
 If you want to go more in depth on styling and customizing, have a look at the draw() and drawKey() methods.
 
+## Examples
 
+* [Basic](http://www.uxvision.it/projects/VRKeyboard/examples/Basic.html)
+* [TextInput](http://www.uxvision.it/projects/VRKeyboard/examples/VRTextInputs.html)
+* [Styling](http://www.uxvision.it/projects/VRKeyboard/examples/Styling.html)
+* Complex 3D Scene

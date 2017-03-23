@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
     <script src="../libs/three.min.js"></script>
     <script src="../libs/tween.min.js"></script>
-    <script src="../js/threejs/renderers/CSS3DRenderer.js"></script>
     <script src="../js/threejs/controls/OrbitControls.js"></script>
     <script src="../js/threejs/controls/TrackballControls.js"></script>
     <script src="../js/VRKeyboard.js"></script>
@@ -15,8 +14,7 @@
         var container;
         var camera;
 
-        var sceneGl, rendererGl;
-        var sceneCss, rendererCss;
+        var scene, renderer;
         var controls;
         var vrKeyboard;
         var searchTxt;
@@ -33,34 +31,26 @@
             container= document.getElementById(element);
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
 
-            sceneGl = new THREE.Scene();
-            sceneCss = new THREE.Scene();
+            scene = new THREE.Scene();
 
-            rendererCss = new THREE.CSS3DRenderer();
-            rendererCss.setSize(window.innerWidth, window.innerHeight);
-            rendererCss.domElement.style.position = 'absolute';
-            rendererCss.domElement.style.top = 0;
+            renderer = new THREE.WebGLRenderer({alpha:true});
+            renderer.setClearColor(0x000000, 0.0);
+            renderer.setSize(window.innerWidth, window.innerHeight);
 
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.zIndex = 1;
+            renderer.domElement.style.top = 0;
 
-            rendererGl = new THREE.WebGLRenderer({alpha:true});
-            rendererGl.setClearColor(0x00ff00, 0.0);
-            rendererGl.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled=true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.gammaInput = true;
+            renderer.gammaOutput = true;
 
-            rendererGl.domElement.style.position = 'absolute';
-            rendererGl.domElement.style.zIndex = 1;
-            rendererGl.domElement.style.top = 0;
-            rendererGl.domElement.style.pointerEvents = 'none';
-            rendererGl.shadowMap.enabled=true;
-            rendererGl.shadowMap.type = THREE.PCFSoftShadowMap;
-            rendererGl.gammaInput = true;
-            rendererGl.gammaOutput = true;
-            rendererCss.domElement.appendChild(rendererGl.domElement);
-
-            container.appendChild(rendererCss.domElement);
+            container.appendChild(renderer.domElement);
 
 
             //controls = new THREE.TrackballControls(camera);
-            controls = new THREE.TrackballControls(camera, rendererCss.domElement);
+            controls = new THREE.TrackballControls(camera, renderer.domElement);
             //controls.maxPolarAngle = Math.PI * 0.5;
             //controls.minPolarAngle = Math.PI * 0.5;
             controls.minDistance = 100;
@@ -72,20 +62,28 @@
             camera.lookAt(new THREE.Vector3(0,0,0))
 
             window.addEventListener('resize', onWindowResize, false);
-            animate();
+
 
             //Keyboard
-            vrKeyboard=new VRKeyboard()
-            vrKeyboard.addEventListener('keypress' , function(e){
+            vrKeyboard=new VRKeyboard(scene, camera, renderer)
+            vrKeyboard.addEventListener('keydown' , function(e){
                 console.log(e.code);
-                if(e.code=='\u23CE')
+                if(e.code==Unicode.ENTER)
                     doSearch()
             })
 
+
+            searchTxt=new VRTextInput();
+            searchTxt.position.set(0,0,0);
+            searchTxt.width=800;
+            searchTxt.placeholder="Search...";
+
+            vrKeyboard.addField(searchTxt)
+
             vrKeyboard.rotation.x-=0.9;
             vrKeyboard.position.z+=200;
-            //vrKeyboard.position.y-=200
-            sceneCss.add(vrKeyboard);
+            vrKeyboard.position.y-=200
+
 
 
             //keyboard mask
@@ -99,14 +97,9 @@
             bg.position.z+=200;
             bg.castShadow = true;
             bg.receiveShadow = true;
-            sceneGl.add(bg)
+            //scene.add(bg)
 
-            searchTxt=new VRTextInput('search');
-            searchTxt.position.set(0,140-18,0);
-            searchTxt.setWidth(800);
-            searchTxt.setPlaceholder('Search...')
-            sceneCss.add(searchTxt);
-            vrKeyboard.register(searchTxt)
+
 
             //searchTxt mask
             var txtGeo=new THREE.PlaneGeometry(840,60, 32);
@@ -116,11 +109,11 @@
             txtMat.transparent=true;
             var txt=new THREE.Mesh(txtGeo, txtMat)
             txt.position.set(0,140,0);
-            sceneGl.add(txt)
+            //scene.add(txt)
 
 
             holder=new THREE.Group();
-            sceneGl.add(holder);
+            scene.add(holder);
 
             var floorGeo=new THREE.PlaneGeometry(5000,5000, 32 );
             var floorMat=new THREE.MeshPhongMaterial( {color: 0x333333} );
@@ -132,7 +125,7 @@
             floor.position.y-=200
             floor.castShadow = true;
             floor.receiveShadow = true;
-            sceneGl.add(floor);
+            //scene.add(floor);
 
 
             var spotLight = new THREE.SpotLight( 0xffffff, 5.0 );
@@ -153,8 +146,11 @@
             var ambient = new THREE.AmbientLight( 0x111111 );
 
 
-            sceneGl.add( spotLight );
-            sceneGl.add( ambient );
+            scene.add( spotLight );
+            scene.add( ambient );
+
+
+            animate();
 
         }
 
@@ -162,24 +158,23 @@
         {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-            rendererGl.setSize(window.innerWidth, window.innerHeight);
-            rendererCss.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
         function animate()
         {
             requestAnimationFrame(animate);
             controls.update();
+            vrKeyboard.update();
             TWEEN.update();
-            rendererGl.render(sceneGl, camera);
-            rendererCss.render(sceneCss, camera);
+            renderer.render(scene, camera);
+
 
         }
 
-
         function clear()
         {
-            searchTxt.setValue("");
+            searchTxt.value=""
             for (var i = holder.children.length - 1; i >= 0; i--) {
                 holder.remove(holder.children[i]);
             }
@@ -246,7 +241,7 @@
 
         function doSearch(keywords)
         {
-            var apiURL = "https://api.spotify.com/v1/search?q="+searchTxt.getValue()+"&type=album&limit=50";
+            var apiURL = "https://api.spotify.com/v1/search?q="+searchTxt.value+"&type=album&limit=50";
             clear()
             getJSON(apiURL, function(data) {
                 albums=[]
@@ -317,7 +312,7 @@
 
 </head>
 <body onload="init('container')">
-    <div id="msg">Find Artists or Albums on Spotify: Type search keywords and click ENTER</div>
+<div id="msg">Find Artists or Albums on Spotify: Type search keywords and click ENTER</div>
     <div id="container"></div>
 </body>
 </html>

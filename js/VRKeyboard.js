@@ -60,9 +60,9 @@ VRKey=function(data, xPos, yPos)
             this.height = 60;
     }
 
-    this.collides=function(point3D)
+    this.collides=function(pos)
     {
-        return (point3D.x> this.getBounds().left && point3D.x<this.getBounds().right && point3D.y>this.getBounds().top && point3D.y <this.getBounds().bottom);
+        return (pos.x> this.getBounds().left && pos.x<this.getBounds().right && pos.y>this.getBounds().top && pos.y <this.getBounds().bottom);
     }
 
 
@@ -552,11 +552,13 @@ VRKeyboard = function (scene, camera, renderer) {
         this.raycaster.setFromCamera(mouse3D, this.camera);
         var intersects = this.raycaster.intersectObjects(this.scene.children, true);
         if (intersects.length > 0 && intersects[0].object.parent instanceof VRKeyboard) {
-            var point3D = new THREE.Vector3(intersects[0].point.x + (this.width / 2), Math.abs(intersects[0].point.y - (this.height / 2)), intersects[0].point.z)
+            var pos = new THREE.Vector2(intersects[0].point.x, intersects[0].point.z)
+            pos.x+=this.width/2 + this.position.x
+            pos.y+=this.height/2 - this.position.z
             for (var key in this.keys) {
 
                 if(this.keys.hasOwnProperty(key))
-                    if (this.keys[key].collides(point3D))
+                    if (this.keys[key].collides(pos))
                         return this.keys[key];
             }
         }
@@ -635,6 +637,8 @@ VRKeyboard = function (scene, camera, renderer) {
     this.onKeyDown=function(key)
     {
         var self=this;
+
+
         this.hold=window.setTimeout(function() {
             self.dispatchEvent({type: 'keyhold', code: key.code});
             clearTimeout(this.hold);
