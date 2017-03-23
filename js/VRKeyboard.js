@@ -767,12 +767,7 @@ VRKeyboard = function (scene, camera, renderer) {
         this.scene.add(field)
     }
 
-    this.hexToRGB=function (hex){
-        var r = hex >> 16;
-        var g = hex >> 8 & 0xFF;
-        var b = hex & 0xFF;
-        return [r,g,b];
-    }
+
 
     this.update=function()
     {
@@ -933,6 +928,18 @@ VRTextInput = function () {
         }
     });
 
+    this._placeholder=""; //default
+
+    Object.defineProperty(VRTextInput.prototype, 'placeholder', {
+        enumerable: true,
+        configurable: true,
+        get: function() { return this._placeholder },
+        set: function(value) {
+            this._placeholder=value;
+            this.build()
+        }
+    });
+
     this.collides=function(pointerX, pointerY)
     {
         if(!this.scene)
@@ -1004,7 +1011,7 @@ VRTextInput = function () {
 
         this.context.textAlign = "left";
         this.context.font = "Normal 18px Arial";
-        this.context.fillStyle = this.hasFocus?this.textFocusColor:this.textColor;
+
 
         var text=""
         var offset=0;
@@ -1038,7 +1045,18 @@ VRTextInput = function () {
                 text=this.value;
         }
 
-        this.context.fillText(text, this.padding-offset, this.height/2+6);
+        if(this.placeholder && !this.value)
+        {
+            this.context.fillStyle = this.hasFocus?"rgba("+hexToRgb(this.textFocusColor).r+","+hexToRgb(this.textFocusColor).g+","+hexToRgb(this.textFocusColor).b+", 0.4)":"rgba("+hexToRgb(this.textColor).r+","+hexToRgb(this.textColor).g+","+hexToRgb(this.textColor).b+", 0.4)";
+            this.context.fillText(this.placeholder, this.padding-offset, this.height/2+6);
+            this.context.fillStyle = this.hasFocus?this.textFocusColor:this.textColor;
+            this.context.fillText(text, this.padding-offset, this.height/2+6);
+        }
+        else
+        {
+            this.context.fillStyle = this.hasFocus?this.textFocusColor:this.textColor;
+            this.context.fillText(text, this.padding-offset, this.height/2+6);
+        }
 
         //clipping mask
 
@@ -1111,6 +1129,16 @@ VRTextInput = function () {
 VRTextInput.prototype = Object.assign(Object.create(THREE.Group.prototype), {
     constructor: VRTextInput
 });
+
+
+var hexToRgb=function(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
 
 
 CanvasRenderingContext2D.prototype.roundRect =function(x, y, w, h, r)

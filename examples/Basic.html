@@ -15,7 +15,6 @@
         var controls;
         var vrKeyboard;
 
-
         function init(element)
         {
             container= document.getElementById(element);
@@ -47,7 +46,6 @@
                 document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key"
             })
             animate();
-
         }
 
         function onWindowResize()
@@ -59,7 +57,6 @@
 
         function animate()
         {
-
             requestAnimationFrame(animate);
             controls.update();
             vrKeyboard.update()

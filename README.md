@@ -51,7 +51,7 @@ Create a basic 3D scene:
 
 Instantiate a VRKeyboard passing a reference to current scene, camera and renderer:
 
-    var vrKeyboard=new VRKeyboard(scene, camera, renderer)
+    var vrKeyboard = new VRKeyboard(scene, camera, renderer)
 
 Call the VRKeyboard update in the rendering loop:
 
@@ -80,14 +80,14 @@ Supported events are:
 
 Add and layout VRTextInput instances as necessary, for example:
 
-    var usernameTxt=new VRTextInput();
-    usernameTxt.width=400;
+    var usernameTxt = new VRTextInput();
+    usernameTxt.width = 400;
     usernameTxt.position.set(0,300,0);
 
-    var passwordTxt=new VRTextInput();
-    passwordTxt.width=400
+    var passwordTxt = new VRTextInput();
+    passwordTxt.width = 400
     passwordTxt.position.set(0,220,0);
-    passwordTxt.displayAsPassword=true;
+    passwordTxt.displayAsPassword = true;
 
 
 Register VRTextInput instances to the VRKeyboard:
@@ -99,12 +99,12 @@ Registered fields automatically receive focus when clicked.
 
 To set focus programmatically assign it as target of the VRKeyboard:
 
-     vrKeyboard.target=usernameTxt;
+     vrKeyboard.target = usernameTxt;
 
 Then type something and get the VRTextInput value, e.g.:
 
     vrKeyboard.addEventListener("keydown", function(e){
-        if(e.code==Unicode.ENTER){
+        if(e.code == Unicode.ENTER){
             console.log(usernameTxt.value);
         }
     }
