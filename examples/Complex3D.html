@@ -38,7 +38,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
 
             renderer.domElement.style.position = 'absolute';
-            renderer.domElement.style.zIndex = 1;
+            //renderer.domElement.style.zIndex = 1;
             renderer.domElement.style.top = 0;
 
             renderer.shadowMap.enabled=true;
@@ -67,14 +67,14 @@
             //Keyboard
             vrKeyboard=new VRKeyboard(scene, camera, renderer)
             vrKeyboard.addEventListener('keydown' , function(e){
-                console.log(e.code);
                 if(e.code==Unicode.ENTER)
                     doSearch()
             })
 
 
             searchTxt=new VRTextInput();
-            searchTxt.position.set(0,0,0);
+            searchTxt.position.set(0,150,0);
+            searchTxt.rotation.x-=0.9
             searchTxt.width=800;
             searchTxt.placeholder="Search...";
 
@@ -82,8 +82,32 @@
 
             vrKeyboard.rotation.x-=0.9;
             vrKeyboard.position.z+=200;
-            vrKeyboard.position.y-=200
 
+
+            vrKeyboard.keyColor="#CCCCCC";
+            vrKeyboard.labelColor="#0080FF";
+            vrKeyboard.borderColor="#0080FF";
+            vrKeyboard.keyOverColor="#FFFFFF";
+            vrKeyboard.labelOverColor="#006DD9";
+            vrKeyboard.borderOverColor="#006DD9";
+            vrKeyboard.borderRadius=16
+
+            searchTxt.backgroundColor="#CCCCCC";
+            searchTxt.textColor="#0080FF"
+            searchTxt.borderColor="#0080FF";
+            searchTxt.backgroundFocusColor="#FFFFFF";
+            searchTxt.textFocusColor="#006DD9"
+            searchTxt.borderFocusColor="#006DD9";
+            searchTxt.borderRadius=16
+
+            searchTxt.addEventListener("mousedown", function(e)
+            {
+                new TWEEN.Tween( camera.position )
+                        .to( { x: 0, y: 1000, z:1500 }, 1000 )
+                        .easing( TWEEN.Easing.Exponential.Out )//.delay(50*currentPoint)
+                        .start();
+
+            })
 
 
             //keyboard mask
@@ -125,7 +149,7 @@
             floor.position.y-=200
             floor.castShadow = true;
             floor.receiveShadow = true;
-            //scene.add(floor);
+            scene.add(floor);
 
 
             var spotLight = new THREE.SpotLight( 0xffffff, 5.0 );
@@ -155,7 +179,7 @@
         }
 
         function onWindowResize()
-        {
+        {x
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -164,7 +188,7 @@
         function animate()
         {
             requestAnimationFrame(animate);
-            controls.update();
+            //controls.update();
             vrKeyboard.update();
             TWEEN.update();
             renderer.render(scene, camera);
@@ -212,7 +236,7 @@
                 new THREE.MeshPhongMaterial( { color: 0x666666} ), // left
                 new THREE.MeshPhongMaterial( { color: 0x666666} ), // top
                 new THREE.MeshPhongMaterial( { color: 0x666666} ), // bottom
-                new THREE.MeshPhongMaterial( { map:albums[currentPoint].texture } ), // back
+                new THREE.MeshPhongMaterial( { map:albums[currentPoint].texture} ), // back
                 new THREE.MeshPhongMaterial( { color: 0x333333} )  // front
             ]
 
@@ -243,6 +267,13 @@
         {
             var apiURL = "https://api.spotify.com/v1/search?q="+searchTxt.value+"&type=album&limit=50";
             clear()
+
+            new TWEEN.Tween( camera.position )
+                    .to( { x: 0, y: 2500, z:3000 }, 1000 )
+                    .easing( TWEEN.Easing.Exponential.Out )//.delay(50*currentPoint)
+                    .start();
+
+
             getJSON(apiURL, function(data) {
                 albums=[]
                 for(var i in data.albums.items)
@@ -269,6 +300,7 @@
                         function (data)
                         {
                             self.texture=data;
+                            self.texture.minFilter = THREE.LinearFilter
                             itemsToLoad--
                             if(itemsToLoad==0)
                                 display(albums);
@@ -312,7 +344,8 @@
 
 </head>
 <body onload="init('container')">
-<div id="msg">Find Artists or Albums on Spotify: Type search keywords and click ENTER</div>
+
     <div id="container"></div>
+    <div id="msg">Find Artists or Albums on Spotify: Type search keywords and click ENTER</div>
 </body>
 </html>
