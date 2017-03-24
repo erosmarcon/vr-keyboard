@@ -72,55 +72,7 @@
             window.addEventListener('resize', onWindowResize, false);
 
 
-            //Keyboard
-            vrKeyboard=new VRKeyboard(scene, camera, renderer)
-            vrKeyboard.addEventListener('keydown' , function(e){
-                if(e.code==Unicode.ENTER)
-                    doSearch()
-            })
 
-
-            searchTxt=new VRTextInput();
-            searchTxt.position.set(0,150,0);
-            searchTxt.rotation.x-=0.9
-            searchTxt.width=800;
-            searchTxt.placeholder="Search...";
-
-            vrKeyboard.addField(searchTxt)
-
-            vrKeyboard.target=searchTxt;
-
-            vrKeyboard.rotation.x-=0.9;
-            vrKeyboard.position.z+=200;
-
-
-            vrKeyboard.keyColor="#CCCCCC";
-            vrKeyboard.labelColor="#0080FF";
-            vrKeyboard.borderColor="#0080FF";
-            vrKeyboard.keyOverColor="#FFFFFF";
-            vrKeyboard.labelOverColor="#006DD9";
-            vrKeyboard.borderOverColor="#006DD9";
-            vrKeyboard.borderRadius=16
-
-            searchTxt.backgroundColor="#CCCCCC";
-            searchTxt.textColor="#0080FF"
-            searchTxt.borderColor="#0080FF";
-            searchTxt.backgroundFocusColor="#FFFFFF";
-            searchTxt.textFocusColor="#006DD9"
-            searchTxt.borderFocusColor="#006DD9";
-            searchTxt.borderRadius=16
-
-
-
-
-            searchTxt.addEventListener("mousedown", function(e)
-            {
-                new TWEEN.Tween( camera.position )
-                        .to( { x: 0, y: 500, z:1000 }, 1000 )
-                        .easing( TWEEN.Easing.Exponential.Out )//.delay(50*currentPoint)
-                        .start();
-
-            })
 
 
             var cylGeo = new THREE.CylinderBufferGeometry( 3000, 3000, 5000, 64, 1, true, 0, Math.PI*2);
@@ -162,6 +114,58 @@
 
             scene.add( spotLight );
             scene.add( ambient );
+
+
+            //Keyboard
+            vrKeyboard=new VRKeyboard(scene, camera, renderer)
+            vrKeyboard.addEventListener('keydown' , function(e){
+                if(e.code==Unicode.ENTER)
+                    doSearch()
+            })
+
+
+            searchTxt=new VRTextInput();
+            searchTxt.position.set(0,150,0);
+            searchTxt.rotation.x-=0.9
+            searchTxt.width=800;
+            searchTxt.placeholder="Search...";
+
+            vrKeyboard.addField(searchTxt)
+
+            vrKeyboard.target=searchTxt;
+
+            vrKeyboard.rotation.x-=0.9;
+            vrKeyboard.position.z+=200;
+
+
+            vrKeyboard.keyColor="#CCCCCC";
+            vrKeyboard.labelColor="#0080FF";
+            vrKeyboard.borderColor="#0080FF";
+            vrKeyboard.keyOverColor="#FFFFFF";
+            vrKeyboard.labelOverColor="#006DD9";
+            vrKeyboard.borderOverColor="#006DD9";
+            vrKeyboard.borderRadius=16
+
+            searchTxt.backgroundColor="#CCCCCC";
+            searchTxt.textColor="#0080FF"
+            searchTxt.borderColor="#0080FF";
+            searchTxt.backgroundFocusColor="#FFFFFF";
+            searchTxt.textFocusColor="#006DD9"
+            searchTxt.borderFocusColor="#006DD9";
+            searchTxt.borderRadius=16
+
+
+
+
+            searchTxt.addEventListener("focus", function(e)
+            {
+                console.log("ff")
+                new TWEEN.Tween( camera.position )
+                        .to( { x: 0, y: 500, z:1000 }, 1000 )
+                        .easing( TWEEN.Easing.Exponential.Out )//.delay(50*currentPoint)
+                        .start();
+
+            })
 
             animate();
 

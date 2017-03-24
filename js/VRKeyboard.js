@@ -110,13 +110,13 @@ VRKeyboard = function (scene, camera, renderer) {
         }
     });
 
-    this._keyOverColor='#333333';
-    Object.defineProperty(VRKeyboard.prototype, 'keyOverColor', {
+    this._keyDownColor='#333333';
+    Object.defineProperty(VRKeyboard.prototype, 'keyDownColor', {
         enumerable: true,
         configurable: true,
-        get: function() { return this._keyOverColor },
+        get: function() { return this._keyDownColor },
         set: function(value) {
-            this._keyOverColor=value
+            this._keyDownColor=value
             this.build(this.currentType)
 
         }
@@ -134,13 +134,13 @@ VRKeyboard = function (scene, camera, renderer) {
         }
     });
 
-    this._labelOverColor='#99FF33';
-    Object.defineProperty(VRKeyboard.prototype, 'labelOverColor', {
+    this._labelDownColor='#99FF33';
+    Object.defineProperty(VRKeyboard.prototype, 'labelDownColor', {
         enumerable: true,
         configurable: true,
-        get: function() { return this._labelOverColor },
+        get: function() { return this._labelDownColor },
         set: function(value) {
-            this._labelOverColor=value
+            this._labelDownColor=value
             this.build(this.currentType)
 
         }
@@ -158,13 +158,13 @@ VRKeyboard = function (scene, camera, renderer) {
         }
     });
 
-    this._borderOverColor='#99FF33';
-    Object.defineProperty(VRKeyboard.prototype, 'borderOverColor', {
+    this._borderDownColor='#99FF33';
+    Object.defineProperty(VRKeyboard.prototype, 'borderDownColor', {
         enumerable: true,
         configurable: true,
-        get: function() { return this._borderOverColor },
+        get: function() { return this._borderDownColor },
         set: function(value) {
-            this._borderOverColor=value
+            this._borderDownColor=value
             this.build(this.currentType)
 
         }
@@ -189,7 +189,6 @@ VRKeyboard = function (scene, camera, renderer) {
         configurable: true,
         get: function() { return this._target },
         set: function(field) {
-
             for (var i in this.fields)
             {
                 this.fields[i].blur();
@@ -625,17 +624,17 @@ VRKeyboard = function (scene, camera, renderer) {
 
         this.context.clearRect(key.x-2, key.y-2, key.width+4, key.height+4);
 
-        if(key.hasInput)
+        if(key.down)
         {
-            this.context.strokeStyle = this.borderOverColor
-            this.context.fillStyle = this.keyOverColor;
+            this.context.strokeStyle = this.borderDownColor
+            this.context.fillStyle = this.keyDownColor;
             this.context.beginPath();
             this.context.roundRect(key.x, key.y, key.width, key.height, this.borderRadius);
             this.context.fill();
             this.context.stroke();
             this.context.textAlign = "center";
             this.context.font = "Normal 18px Arial";
-            this.context.fillStyle = this.labelOverColor;
+            this.context.fillStyle = this.labelDownColor;
             this.context.fillText(key.code, key.x + key.width / 2, key.y + key.height / 2 + 4);
 
         }
@@ -699,30 +698,35 @@ VRKeyboard = function (scene, camera, renderer) {
 
         }
 
+        key.down=true;
+        this.drawKey(key)
+
     }
 
     this.onKeyOver=function(key)
     {
-        if(key.hasInput)
+        if(key.over)
             return;
-        key.hasInput=true;
+        key.over=true;
         this.dispatchEvent({type: 'keyover', code: key.code});
         this.drawKey(key)
     }
 
     this.onKeyOut=function(key)
     {
-        if(!key.hasInput)
+        if(!key.over)
             return;
-        key.hasInput=false;
+        key.over=false;
         this.dispatchEvent({type: 'keyout', code: key.code});
         this.drawKey(key)
     }
 
     this.onKeyUp=function(key)
     {
+        key.down=false;
         clearTimeout(this.hold);
         this.dispatchEvent({type: 'keyup', code: key.code});
+        this.drawKey(key)
     }
 
 
@@ -1134,12 +1138,15 @@ VRTextInput = function () {
     {
         this.hasFocus=false;
         this.draw()
+        this.dispatchEvent({type:"blur"})
     }
 
     this.focus=function()
     {
+        console.log("FFFFF")
         this.hasFocus=true;
         this.draw()
+        this.dispatchEvent({type:"focus"})
     }
 
 

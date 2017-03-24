@@ -45,7 +45,6 @@
             vrKeyboard.addEventListener('keydown' , function(e){
                 console.log(e.code)
                 document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key"
-                console.log(controls)
             })
 
             controls = new THREE.TrackballControls(camera, renderer.domElement);
