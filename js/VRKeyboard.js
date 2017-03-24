@@ -694,10 +694,10 @@ VRKeyboard = function (scene, camera, renderer) {
             default:
                 //console.log(key.code);
                 this.updateText(key);
-                this.dispatchEvent({type: 'keydown', code: key.code});
+
 
         }
-
+        this.dispatchEvent({type: 'keydown', code: key.code});
         key.down=true;
         this.drawKey(key)
 
@@ -778,17 +778,22 @@ VRKeyboard = function (scene, camera, renderer) {
 
         field.addEventListener("mousedownoutside", function (e) {
 
-            var mouse3D = new THREE.Vector3(( self.pointerX / this.renderer.domElement.width ) * 2 - 1, -( self.pointerY / this.renderer.domElement.height ) * 2 + 1, 0);
-            self.raycaster.setFromCamera(mouse3D, self.camera);
-            var intersects = self.raycaster.intersectObjects(self.scene.children, true);
-            if (intersects.length > 0 && intersects[0].object.parent instanceof VRKeyboard) {
-                return; //keyboard was clicked do nothing
+            setTimeout(function() {
 
-            }
-            if(field===self.target)
-                self.target=null
+                var mouse3D = new THREE.Vector3( ( self.pointerX / self.renderer.domElement.width ) * 2 - 1, - ( self.pointerY / self.renderer.domElement.height ) * 2 + 1, 0.5 );
+                mouse3D.unproject(self.camera );
+                self.raycaster = new THREE.Raycaster( self.camera.position, mouse3D.sub( self.camera.position ).normalize() );
+                var intersects = self.raycaster.intersectObject(self, true);
+                if (intersects.length > 0) {
+                    return;
+                }
+                if(field===self.target)
+                    self.target=null
+            }, 100);
+
 
         })
+
         field.scene=this.scene;
         field.camera=this.camera;
         field.renderer=this.renderer;
@@ -807,7 +812,12 @@ VRKeyboard = function (scene, camera, renderer) {
                 if (this.keys[k]==this.getInput(this.pointerX, this.pointerY))
                     this.onKeyOver(this.keys[k])
                 else
+                {
                     this.onKeyOut(this.keys[k])
+                    if(this.keys[k].down)
+                    this.onKeyUp(this.keys[k])
+                }
+
             }
         }
         for (var i in this.fields)
@@ -829,10 +839,8 @@ VRTextInput = function () {
 
     THREE.Group.apply(this);
 
-    this.raycaster = new THREE.Raycaster();
     this.pointerX=0;
     this.pointerY=0;
-
 
 
     //styling
@@ -973,12 +981,26 @@ VRTextInput = function () {
     {
         if(!this.scene)
             return;
+
+        var mouse3D = new THREE.Vector3( ( pointerX / this.renderer.domElement.width ) * 2 - 1, - ( pointerY / this.renderer.domElement.height ) * 2 + 1, 0.5 );
+        mouse3D.unproject(this.camera );
+        this.raycaster = new THREE.Raycaster( this.camera.position, mouse3D.sub( this.camera.position ).normalize() );
+        var intersects = this.raycaster.intersectObject(this, true);
+
+        if (intersects.length > 0) {
+
+          return true;
+        }
+
+        /*
+
         var mouse3D = new THREE.Vector3(( pointerX / this.renderer.domElement.width ) * 2 - 1, -( pointerY / this.renderer.domElement.height ) * 2 + 1, 0);
         this.raycaster.setFromCamera(mouse3D, this.camera);
         var intersects = this.raycaster.intersectObjects(this.scene.children, true);
         if (intersects.length > 0 && intersects[0].object.parent ==this) {
             return true;
         }
+         */
         return false;
     }
 
@@ -1000,6 +1022,8 @@ VRTextInput = function () {
 
 
         document.addEventListener('mousedown', function (event) {
+
+
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
             if(self.collides(self.pointerX, self.pointerY))
@@ -1143,7 +1167,6 @@ VRTextInput = function () {
 
     this.focus=function()
     {
-        console.log("FFFFF")
         this.hasFocus=true;
         this.draw()
         this.dispatchEvent({type:"focus"})

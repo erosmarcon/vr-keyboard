@@ -47,6 +47,11 @@
                 document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key"
             })
 
+            vrKeyboard.addEventListener('keyhold' , function(e){
+                console.log(e.code)
+                document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key for more than 1 second"
+            })
+
             controls = new THREE.TrackballControls(camera, renderer.domElement);
             controls.maxPolarAngle = Math.PI * 0.5;
             controls.minDistance = 100;
