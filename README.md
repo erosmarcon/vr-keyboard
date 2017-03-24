@@ -153,6 +153,6 @@ If you want to go more in depth on styling and customizing, have a look at the d
 * [Basic](http://www.uxvision.it/projects/VRKeyboard/examples/Basic.html)
 * [TextInput](http://www.uxvision.it/projects/VRKeyboard/examples/VRTextInputs.html)
 * [Styling](http://www.uxvision.it/projects/VRKeyboard/examples/Styling.html)
-* [3D Scene: Search Spotify](http://www.uxvision.it/projects/VRKeyboard/examples/Complex3D.html)
+* Complex 3D Scene (WIP)
 
 
