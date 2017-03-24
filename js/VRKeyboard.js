@@ -802,7 +802,6 @@ VRKeyboard = function (scene, camera, renderer) {
                 mouse3D.unproject(self.camera );
                 self.raycaster = new THREE.Raycaster( self.camera.position, mouse3D.sub( self.camera.position ).normalize() );
                 var intersects = self.raycaster.intersectObject(self, true);
-                console.log(intersects)
                 if (intersects.length > 0) {
                     return;
                 }
