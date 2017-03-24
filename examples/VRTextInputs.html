@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <title>VRKeyboard</title>
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+    <script src="../libs/stats.min.js"></script>
     <script src="../libs/three.min.js"></script>
     <script src="../js/threejs/controls/TrackballControls.js"></script>
     <script src="../js/VRKeyboard.js"></script>
     <script>
         var container;
         var camera;
-
+        var stats;
         var scene, renderer;
         var controls;
         var vrKeyboard;
+
 
         function init(element)
         {
@@ -34,6 +36,12 @@
             controls.maxPolarAngle = Math.PI * 0.5;
             controls.minDistance = 100;
             controls.maxDistance = 25000;
+
+            stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.bottom = '0px';
+            stats.domElement.style.zIndex = 100;
+            container.appendChild( stats.domElement );
 
             camera.position.set(0, 0, 1500);
             camera.lookAt(new THREE.Vector3(0,0,0))
@@ -83,6 +91,7 @@
             controls.update();
             vrKeyboard.update()
             renderer.render(scene, camera);
+            stats.update();
         }
 
     </script>

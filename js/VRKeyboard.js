@@ -454,6 +454,9 @@ VRKeyboard = function (scene, camera, renderer) {
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
 
+
+
+
             var key=self.getInput(self.pointerX, self.pointerY)
             if(key)
                 self.onKeyDown(key);
@@ -548,17 +551,20 @@ VRKeyboard = function (scene, camera, renderer) {
 
     this.getInput=function(pointerX, pointerY)
     {
-        var mouse3D = new THREE.Vector3(( pointerX / this.renderer.domElement.width  ) * 2 - 1, -( pointerY / this.renderer.domElement.height  ) * 2 + 1, 0);
-        this.raycaster.setFromCamera(mouse3D, this.camera);
-        var intersects = this.raycaster.intersectObjects(this.scene.children, true);
-        if (intersects.length > 0 && intersects[0].object.parent instanceof VRKeyboard) {
-            var pos = new THREE.Vector2(intersects[0].point.x, intersects[0].point.z)
-            pos.x+=this.width/2 + this.position.x
-            pos.y+=this.height/2 - this.position.z
-            for (var key in this.keys) {
+        var mouse3D = new THREE.Vector3( ( pointerX / this.renderer.domElement.width ) * 2 - 1, - ( pointerY / this.renderer.domElement.height ) * 2 + 1, 0.5 );
+        mouse3D.unproject(this.camera );
+        this.raycaster = new THREE.Raycaster( this.camera.position, mouse3D.sub( this.camera.position ).normalize() );
+        var intersects = this.raycaster.intersectObject(this, true);
 
+        if (intersects.length > 0) {
+
+            var point = new THREE.Vector3().copy( intersects[ 0 ].point );
+            intersects[ 0 ].object.worldToLocal( point );
+            point.x+=this.width/2;
+            point.y=Math.abs(point.y-this.height/2);
+            for (var key in this.keys) {
                 if(this.keys.hasOwnProperty(key))
-                    if (this.keys[key].collides(pos))
+                    if (this.keys[key].collides(point))
                         return this.keys[key];
             }
         }

@@ -9,7 +9,8 @@ body {
 #msg
 {
     font-family: Arial, Helvetica, sans-serif;
-    padding:20px;
+    padding-top:20px;
+    padding-left:100px;
     position: absolute;
     pointer-events: none;
 }

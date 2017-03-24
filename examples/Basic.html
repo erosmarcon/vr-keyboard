@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>VRKeyboard</title>
     <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+    <script src="../libs/stats.min.js"></script>
     <script src="../libs/three.min.js"></script>
     <script src="../js/threejs/controls/TrackballControls.js"></script>
     <script src="../js/VRKeyboard.js"></script>
@@ -14,6 +15,7 @@
         var scene, renderer;
         var controls;
         var vrKeyboard;
+        var stats
 
         function init(element)
         {
@@ -35,12 +37,22 @@
             controls.minDistance = 100;
             controls.maxDistance = 25000;
 
+            stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.bottom = '0px';
+            stats.domElement.style.zIndex = 100;
+            container.appendChild( stats.domElement );
+
             camera.position.set(0, 0, 1500);
             camera.lookAt(new THREE.Vector3(0,0,0))
 
             window.addEventListener('resize', onWindowResize, false);
 
             vrKeyboard=new VRKeyboard(scene, camera, renderer)
+
+            vrKeyboard.rotation.x=0.1
+            vrKeyboard.position.z=1
+
             vrKeyboard.addEventListener('keydown' , function(e){
                 console.log(e.code)
                 document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key"
@@ -61,12 +73,14 @@
             controls.update();
             vrKeyboard.update()
             renderer.render(scene, camera);
+            stats.update();
         }
 
     </script>
 </head>
 <body onload="init('container')">
-<div id="msg">Press any key</div>
+
 <div id="container"></div>
+<div id="msg">Press any key</div>
 </body>
 </html>
