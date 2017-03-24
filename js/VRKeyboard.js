@@ -86,6 +86,8 @@ VRKeyboard = function (scene, camera, renderer) {
 
     THREE.Group.apply(this);
 
+    var onMouseDown, onMouseMove, onMouseUp;
+
     this.camera = camera;
     this.scene = scene;
     this.renderer=renderer;
@@ -93,7 +95,6 @@ VRKeyboard = function (scene, camera, renderer) {
     this.pointerX=0;
     this.pointerY=0;
     this.fields=[];
-
 
     this.referenceText="";
 
@@ -461,7 +462,8 @@ VRKeyboard = function (scene, camera, renderer) {
         this.height = 0 // Keyholder  total height
 
 
-        document.addEventListener('mousedown', function (event) {
+        onMouseDown=function(event)
+        {
             if(!self.enabled)
                 return;
 
@@ -470,19 +472,18 @@ VRKeyboard = function (scene, camera, renderer) {
             var key=self.getInput(self.pointerX, self.pointerY)
             if(key)
                 self.onKeyDown(key);
+        }
 
-        }, true);
-
-
-        document.addEventListener('mousemove', function (event) {
+        onMouseMove=function(event)
+        {
             if(!self.enabled)
                 return;
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
+        }
 
-        }, false);
-
-        document.addEventListener('mouseup', function (event) {
+        onMouseUp=function(event)
+        {
             if(!self.enabled)
                 return;
             self.pointerX=event.clientX;
@@ -490,9 +491,26 @@ VRKeyboard = function (scene, camera, renderer) {
             var key=self.getInput(self.pointerX, self.pointerY)
             if(key)
                 self.onKeyUp(key)
-        }, false);
+        }
+
+
+        document.addEventListener('mousedown', onMouseDown, true);
+        document.addEventListener('mousemove', onMouseMove, false);
+        document.addEventListener('mouseup', onMouseUp, false);
 
         this.build();
+    }
+
+    this.dispose=function()
+    {
+        document.removeEventListener('mousedown', onMouseDown, true);
+        document.removeEventListener('mousemove', onMouseMove, false);
+        document.removeEventListener('mouseup', onMouseUp, false);
+        for (var i in this.fields)
+        {
+            if(this.fields.hasOwnProperty(i))
+                this.fields[i].dispose();
+        }
     }
 
 
@@ -784,6 +802,7 @@ VRKeyboard = function (scene, camera, renderer) {
                 mouse3D.unproject(self.camera );
                 self.raycaster = new THREE.Raycaster( self.camera.position, mouse3D.sub( self.camera.position ).normalize() );
                 var intersects = self.raycaster.intersectObject(self, true);
+                console.log(intersects)
                 if (intersects.length > 0) {
                     return;
                 }
@@ -822,6 +841,7 @@ VRKeyboard = function (scene, camera, renderer) {
         }
         for (var i in this.fields)
         {
+            if(this.fields.hasOwnProperty(i))
             this.fields[i].update();
         }
     }
@@ -841,6 +861,8 @@ VRTextInput = function () {
 
     this.pointerX=0;
     this.pointerY=0;
+
+    var onMouseDown, onMouseMove, onMouseUp;
 
 
     //styling
@@ -1009,6 +1031,14 @@ VRTextInput = function () {
         this.context.clearRect(0,0, this.width, this.height)
     }
 
+    this.dispose = function ()
+    {
+        document.removeEventListener('mousedown', onMouseDown, true);
+        document.removeEventListener('mousemove', onMouseMove, false);
+        document.removeEventListener('mouseup', onMouseUp, false);
+    }
+
+
     this.init=function()
     {
 
@@ -1016,14 +1046,11 @@ VRTextInput = function () {
         this.padding = 20;
         this.hasFocus=false;
 
-
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
 
-
-        document.addEventListener('mousedown', function (event) {
-
-
+        onMouseDown=function(event)
+        {
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
             if(self.collides(self.pointerX, self.pointerY))
@@ -1034,20 +1061,29 @@ VRTextInput = function () {
             {
                 self.dispatchEvent({type:"mousedownoutside"})
             }
-        }, true);
-        document.addEventListener('mousemove', function (event) {
+        }
+
+        onMouseMove=function(event)
+        {
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
 
-        }, false);
-
-        document.addEventListener('mouseup', function (event) {
+        }
+        onMouseUp=function(event)
+        {
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
-        }, false);
+
+        }
+
+        document.addEventListener('mousedown', onMouseDown, true);
+        document.addEventListener('mousemove', onMouseMove, false);
+        document.addEventListener('mouseup', onMouseUp, false);
 
         this.build();
     }
+
+
 
     this.draw = function () {
 
@@ -1055,16 +1091,12 @@ VRTextInput = function () {
         this.clear();
 
         this.context.beginPath();
-
         this.context.roundRect(1, 1, this.width-2, this.height-2, this.borderRadius);
-
         this.context.fillStyle = this.hasFocus?this.backgroundFocusColor:this.backgroundColor;
         this.context.fill();
 
-
         this.context.textAlign = "left";
         this.context.font = "Normal 18px Arial";
-
 
         var text=""
         var offset=0;
@@ -1130,9 +1162,6 @@ VRTextInput = function () {
 
     }
 
-
-
-
     this.build=function()
     {
         for( var i = this.children.length - 1; i >= 0; i--) {
@@ -1153,7 +1182,6 @@ VRTextInput = function () {
         material.transparent = true;
         var mesh = new THREE.Mesh(new THREE.PlaneGeometry(this.canvas.width, this.canvas.height), material);
 
-
         mesh.position.set(0, 0, 0);
         this.add(mesh);
     }
@@ -1172,12 +1200,10 @@ VRTextInput = function () {
         this.dispatchEvent({type:"focus"})
     }
 
-
     this.update=function()
     {
         this.texture.needsUpdate = true;
     }
-
 
     this.init();
 
@@ -1196,7 +1222,6 @@ var hexToRgb=function(hex) {
         b: parseInt(result[3], 16)
     } : null;
 }
-
 
 CanvasRenderingContext2D.prototype.roundRect =function(x, y, w, h, r)
 {
