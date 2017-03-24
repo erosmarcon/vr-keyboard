@@ -158,13 +158,10 @@
             spotLight.distance = 6000;
 
 
-
             var ambient = new THREE.AmbientLight( 0x111111 );
-
 
             scene.add( spotLight );
             scene.add( ambient );
-
 
             animate();
 
@@ -184,7 +181,7 @@
             vrKeyboard.update();
             TWEEN.update();
             renderer.render(scene, camera);
-            stats.update()
+            stats.update();
 
         }
 

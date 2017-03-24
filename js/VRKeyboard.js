@@ -209,6 +209,18 @@ VRKeyboard = function (scene, camera, renderer) {
     });
 
 
+    this._enabled=true;
+    Object.defineProperty(VRKeyboard.prototype, 'enabled', {
+        enumerable: true,
+        configurable: true,
+        get: function() { return this._enabled },
+        set: function(value) {
+            this._enabled=value;
+            this.build(this.currentType)
+        }
+    });
+
+
     const KeyBoardTypes =
     {
         NUMBER_PAD: "number_pad",
@@ -451,12 +463,11 @@ VRKeyboard = function (scene, camera, renderer) {
 
 
         document.addEventListener('mousedown', function (event) {
+            if(!self.enabled)
+                return;
+
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
-
-
-
-
             var key=self.getInput(self.pointerX, self.pointerY)
             if(key)
                 self.onKeyDown(key);
@@ -465,12 +476,16 @@ VRKeyboard = function (scene, camera, renderer) {
 
 
         document.addEventListener('mousemove', function (event) {
+            if(!self.enabled)
+                return;
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
 
         }, false);
 
         document.addEventListener('mouseup', function (event) {
+            if(!self.enabled)
+                return;
             self.pointerX=event.clientX;
             self.pointerY=event.clientY;
             var key=self.getInput(self.pointerX, self.pointerY)
