@@ -72,9 +72,6 @@
             window.addEventListener('resize', onWindowResize, false);
 
 
-
-
-
             var cylGeo = new THREE.CylinderBufferGeometry( 3000, 3000, 5000, 64, 1, true, 0, Math.PI*2);
             var cylMat = new THREE.MeshPhongMaterial( {color:0x00B200, side: THREE.DoubleSide} );
             var cyl = new THREE.Mesh( cylGeo, cylMat );
@@ -337,7 +334,6 @@
 
 </head>
 <body onload="init('container')">
-
     <div id="container"></div>
     <div id="msg">Find Artists or Albums on Spotify: Type search keywords and click ENTER</div>
 </body>
