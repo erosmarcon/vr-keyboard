@@ -20,10 +20,13 @@
         var vrKeyboard;
         var searchTxt;
 
-
-        var albums=[];
         var floor;
         var holder;
+        var loading;
+
+
+        var albums=[];
+
         var itemsToLoad=albums.length;
 
 
@@ -91,6 +94,15 @@
             floor.castShadow = true;
             floor.receiveShadow = true;
             scene.add(floor);
+
+
+            var loadingGeo=new THREE.SphereGeometry(100, 4, 4);
+            var loadingMat=new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe:true} );
+
+            loading=new THREE.Mesh( loadingGeo, loadingMat );
+            loading.position.y=400;
+            loading.visible=false;
+            scene.add( loading );
 
 
             var spotLight = new THREE.SpotLight( 0xffffff, 5.0 );
@@ -177,6 +189,7 @@
 
         function animate()
         {
+            loading.rotation.y+=0.1
             requestAnimationFrame(animate);
             //controls.update();
             vrKeyboard.update();
@@ -206,6 +219,8 @@
             for (var i = 0; i < numberOfItems  ; i++) {
                 placePlane(radius, i, numberOfPoints, numberOfItems);
             }
+
+            loading.visible=false;
         }
 
         function placePlane(radius, currentPoint, numberOfPoints, numberOfItems)
@@ -253,10 +268,12 @@
 
 
 
-        function doSearch(keywords)
+        function doSearch()
         {
             var apiURL = "https://api.spotify.com/v1/search?q="+searchTxt.value+"&type=album&limit=50";
             clear()
+
+            loading.visible=true;
 
             new TWEEN.Tween( camera.position )
                     .to( { x: 0, y: 2500, z:3000 }, 1000 )
@@ -266,15 +283,25 @@
 
             getJSON(apiURL, function(data) {
                 albums=[]
+
+                if(!data.albums.items.length)
+                {
+                    loading.visible=false;
+                    return;
+                }
+
                 for(var i in data.albums.items)
                 {
-                    var album = {name:data.albums.items[i].name, thumb:data.albums.items[i].images[0].url};
+                    var album = {};
+                    if(data.albums.items[i].name)
+                        album.name=data.albums.items[i].name;
+                    if(data.albums.items[i].images[0])
+                        album.thumb=data.albums.items[i].images[0].url;
                     albums.push(album);
                 }
                 loadAlbums(albums)
             });
         }
-
 
         function loadAlbums(albums)
         {
@@ -290,19 +317,19 @@
                         function (data)
                         {
                             self.texture=data;
-                            self.texture.minFilter = THREE.LinearFilter
+                            self.texture.minFilter = THREE.LinearFilter;
                             itemsToLoad--
                             if(itemsToLoad==0)
                                 display(albums);
                         },   // Function called when download progresses
                         function (xhr)
                         {
-
+                            itemsToLoad--
                         },
                         // Function called when download errors
                         function (xhr)
                         {
-
+                            itemsToLoad--
                         }
                     )
                 }

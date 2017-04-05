@@ -1013,15 +1013,6 @@ VRTextInput = function () {
           return true;
         }
 
-        /*
-
-        var mouse3D = new THREE.Vector3(( pointerX / this.renderer.domElement.width ) * 2 - 1, -( pointerY / this.renderer.domElement.height ) * 2 + 1, 0);
-        this.raycaster.setFromCamera(mouse3D, this.camera);
-        var intersects = this.raycaster.intersectObjects(this.scene.children, true);
-        if (intersects.length > 0 && intersects[0].object.parent ==this) {
-            return true;
-        }
-         */
         return false;
     }
 
