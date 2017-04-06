@@ -1,3 +1,21 @@
+
+@font-face
+{
+    font-family: 'opensans';
+    src: url('../assets/fonts/open-sans/open-sans-v13-latin-regular.woff2') format('woff2'), url('../assets/fonts/open-sans/open-sans-v13-latin-regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face
+{
+    font-family: 'opensans-bold';
+    src: url('../assets/fonts/open-sans/open-sans-v13-latin-700.woff2') format('woff2'), url('../assets/fonts/open-sans/open-sans-v13-latin-700.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 body {
     color:#FFFFFF;
     background-color: #333333;
@@ -8,7 +26,8 @@ body {
 
 #msg
 {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'opensans';
+    font-size: 13px;
     padding-top:20px;
     padding-left:100px;
     position: absolute;
@@ -17,14 +36,14 @@ body {
 
 #button-box
 {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'opensans';
     padding:20px;
     position: absolute;
 }
 
 .style-button
 {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'opensans';
     font-size:12px;
     padding:10px;
     margin:10px;
