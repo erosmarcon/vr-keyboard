@@ -44,12 +44,12 @@
 
             vrKeyboard.addEventListener('keydown' , function(e){
                 console.log(e.code)
-                document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key"
+                document.getElementById("msg").innerHTML="You  pressed  "+e.code+" key"
             })
 
             vrKeyboard.addEventListener('keyhold' , function(e){
                 console.log(e.code)
-                document.getElementById("msg").innerHTML="You just pressed the "+e.code+" key for more than 1 second"
+                document.getElementById("msg").innerHTML="You pressed the "+e.code+" key for more than 1 second"
             })
 
             controls = new THREE.TrackballControls(camera, renderer.domElement);
@@ -90,6 +90,6 @@
 </head>
 <body onload="init('container')">
     <div id="container"></div>
-    <div id="msg">Press any key</div>
+    <div id="msg">Press or long press any key</div>
 </body>
 </html>
