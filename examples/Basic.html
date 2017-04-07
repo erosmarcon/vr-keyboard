@@ -61,6 +61,8 @@
             stats.domElement.style.position = 'absolute';
             stats.domElement.style.bottom = '0px';
             stats.domElement.style.zIndex = 100;
+            stats.domElement.style.left='180px'
+
             container.appendChild( stats.domElement );
             animate();
         }
@@ -75,10 +77,11 @@
         function animate()
         {
             requestAnimationFrame(animate);
+            stats.update()
             controls.update();
             vrKeyboard.update()
             renderer.render(scene, camera);
-            stats.update();
+
             //console.log(controls.staticMoving)
 
         }

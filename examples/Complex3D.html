@@ -60,13 +60,13 @@
             controls.minDistance = 100;
             controls.maxDistance = 5000;
 
-
             stats = new Stats();
             stats.domElement.style.position = 'absolute';
             stats.domElement.style.bottom = '0px';
             stats.domElement.style.zIndex = 100;
-            container.appendChild( stats.domElement );
+            stats.domElement.style.left='180px'
 
+            container.appendChild( stats.domElement );
 
             //
             camera.position.set(0, 500, 1000);
@@ -163,8 +163,6 @@
             searchTxt.textFocusColor="#006DD9"
             searchTxt.borderFocusColor="#006DD9";
             searchTxt.borderRadius=16
-
-
 
 
             searchTxt.addEventListener("mousedown", function(e)

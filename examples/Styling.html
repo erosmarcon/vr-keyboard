@@ -8,6 +8,8 @@
     <script src="../libs/three.min.js"></script>
     <script src="../js/threejs/controls/TrackballControls.js"></script>
     <script src="../js/VRKeyboard.js"></script>
+    <script src="../libs/dat.gui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/gui.css"/>
     <script>
         var container;
         var camera;
@@ -36,11 +38,7 @@
             controls.minDistance = 100;
             controls.maxDistance = 25000;
 
-            stats = new Stats();
-            stats.domElement.style.position = 'absolute';
-            stats.domElement.style.bottom = '0px';
-            stats.domElement.style.zIndex = 100;
-            container.appendChild( stats.domElement );
+
 
             camera.position.set(0, 0, 1500);
             camera.lookAt(new THREE.Vector3(0,0,0))
@@ -49,64 +47,6 @@
 
             vrKeyboard=new VRKeyboard(scene, camera, renderer);
 
-            vrKeyboard.addEventListener("keydown", function(e){
-                if(e.code=="a" || e.code=="A")
-                {
-                    vrKeyboard.keyColor="#D90000";
-                    vrKeyboard.labelColor="#FFD24D";
-                    vrKeyboard.borderColor="#FFD24D";
-                    vrKeyboard.keyDownColor="#B20000";
-                    vrKeyboard.labelDownColor="#FFBF00";
-                    vrKeyboard.borderDownColor="#D90000";
-                    vrKeyboard.borderRadius=0
-
-                    searchTxt.backgroundColor="#D90000";
-                    searchTxt.textColor="#FFD24D"
-                    searchTxt.borderColor="#FFD24D";
-                    searchTxt.backgroundFocusColor="#B20000";
-                    searchTxt.textFocusColor="#FFBF00"
-                    searchTxt.borderFocusColor="#FF0000";
-                    searchTxt.borderRadius=0
-                }
-                else if(e.code=="b" || e.code=="B")
-                {
-
-                    vrKeyboard.keyColor="#CCCCCC";
-                    vrKeyboard.labelColor="#0080FF";
-                    vrKeyboard.borderColor="#0080FF";
-                    vrKeyboard.keyDownColor="#FFFFFF";
-                    vrKeyboard.labelDownColor="#006DD9";
-                    vrKeyboard.borderDownColor="#006DD9";
-                    vrKeyboard.borderRadius=16
-
-                    searchTxt.backgroundColor="#CCCCCC";
-                    searchTxt.textColor="#0080FF"
-                    searchTxt.borderColor="#0080FF";
-                    searchTxt.backgroundFocusColor="#FFFFFF";
-                    searchTxt.textFocusColor="#006DD9"
-                    searchTxt.borderFocusColor="#006DD9";
-                    searchTxt.borderRadius=16
-                }
-                else if(e.code=="c" || e.code=="C")
-                {
-                    vrKeyboard.keyColor="#00D96D";
-                    vrKeyboard.labelColor="#006633";
-                    vrKeyboard.borderColor="#006633";
-                    vrKeyboard.keyDownColor="#006633";
-                    vrKeyboard.labelDownColor="#00D96D";
-                    vrKeyboard.borderDownColor="#00D96D";
-                    vrKeyboard.borderRadius=32
-
-                    searchTxt.backgroundColor="#00D96D";
-                    searchTxt.textColor="#006633"
-                    searchTxt.borderColor="#006633";
-                    searchTxt.backgroundFocusColor="#006633";
-                    searchTxt.textFocusColor="#00D96D"
-                    searchTxt.borderFocusColor="#00D96D";
-                    searchTxt.borderRadius=32
-                }
-
-            })
 
             var searchTxt=new VRTextInput();
             searchTxt.width=400
@@ -116,6 +56,34 @@
             vrKeyboard.addField(searchTxt)
             vrKeyboard.target=searchTxt
 
+            stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.bottom = '0px';
+            stats.domElement.style.zIndex = 100;
+            stats.domElement.style.left='180px'
+
+            //Gui
+            var gui = new dat.GUI();
+            var f1 = gui.addFolder('Keyboard');
+            f1.addColor(vrKeyboard, 'keyColor');
+            f1.addColor(vrKeyboard, 'labelColor');
+            f1.addColor(vrKeyboard, 'borderColor');
+            f1.addColor(vrKeyboard, 'keyDownColor');
+            f1.addColor(vrKeyboard, 'labelDownColor');
+            f1.addColor(vrKeyboard, 'borderDownColor');
+            f1.add(vrKeyboard, 'borderRadius', 0, 30);
+            f1.open()
+
+            var f2 = gui.addFolder('Text Inputs');
+            f2.addColor(searchTxt, 'backgroundColor');
+            f2.addColor(searchTxt, 'textColor');
+            f2.addColor(searchTxt, 'borderColor');
+            f2.addColor(searchTxt, 'backgroundFocusColor');
+            f2.addColor(searchTxt, 'textFocusColor');
+            f2.addColor(searchTxt, 'borderFocusColor');
+            f2.add(searchTxt, 'borderRadius', 0, 30);
+
+            container.appendChild( stats.domElement );
 
             animate();
         }
@@ -130,16 +98,16 @@
         function animate()
         {
             requestAnimationFrame(animate);
+            stats.update()
             controls.update();
             vrKeyboard.update()
             renderer.render(scene, camera);
-            stats.update()
         }
 
     </script>
 </head>
 <body onload="init('container')">
     <div id="container"></div>
-    <div id="msg">Press A, B, or C key to change styles</div>
+    <div id="msg">Use tools on the top-right to change styles</div>
 </body>
 </html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>THREE VRKeyboard Examples</title>
+    <link rel="stylesheet" type="text/css" href="../css/index.css"/>
+</head>
+<script>
+
+    function go(location)
+    {
+        document.getElementById('main-frame').src = location;
+    }
+</script>
+<body>
+<iframe src="Basic.html" id="main-frame"></iframe>
+
+<div id="menu-container">
+    <div id="menu">
+        <div class="menu-title">VRKeyboard Examples</div>
+        <div class="menu-item" onclick="go('Basic.html')">Basic</div>
+        <div class="menu-item" onclick="go('VRTextInputs.html')">VR Text Inputs</div>
+        <div class="menu-item" onclick="go('Styling.html')">Styling</div>
+        <div class="menu-item" onclick="go('Complex3D.html')">3D Scene</div>
+
+    </div>
+</div>
+</body>
+</html>

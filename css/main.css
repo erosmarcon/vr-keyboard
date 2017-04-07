@@ -27,11 +27,11 @@ body {
 #msg
 {
     font-family: 'opensans';
-    font-size: 13px;
-    padding-top:20px;
-    padding-left:100px;
+    left:200px;
+    bottom: 20px;
     position: absolute;
-    pointer-events: none;
+    font-size:12px;
+
 }
 
 #button-box
