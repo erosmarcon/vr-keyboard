@@ -63,23 +63,23 @@
             //Gui
             var gui = new dat.GUI();
             var f1 = gui.addFolder('Keyboard');
-            f1.addColor(vrKeyboard, 'keyColor');
-            f1.addColor(vrKeyboard, 'labelColor');
-            f1.addColor(vrKeyboard, 'borderColor');
-            f1.addColor(vrKeyboard, 'keyDownColor');
-            f1.addColor(vrKeyboard, 'labelDownColor');
-            f1.addColor(vrKeyboard, 'borderDownColor');
-            f1.add(vrKeyboard, 'borderRadius', 0, 30);
+            f1.addColor(vrKeyboard, 'keyColor').name("Key");
+            f1.addColor(vrKeyboard, 'labelColor').name("Label");
+            f1.addColor(vrKeyboard, 'borderColor').name("Border");
+            f1.addColor(vrKeyboard, 'keyDownColor').name("Key down");
+            f1.addColor(vrKeyboard, 'labelDownColor').name("Label down");
+            f1.addColor(vrKeyboard, 'borderDownColor').name("Border down");
+            f1.add(vrKeyboard, 'borderRadius', 0, 30).name("Corner radius");
             f1.open()
 
             var f2 = gui.addFolder('Text Inputs');
-            f2.addColor(searchTxt, 'backgroundColor');
-            f2.addColor(searchTxt, 'textColor');
-            f2.addColor(searchTxt, 'borderColor');
-            f2.addColor(searchTxt, 'backgroundFocusColor');
-            f2.addColor(searchTxt, 'textFocusColor');
-            f2.addColor(searchTxt, 'borderFocusColor');
-            f2.add(searchTxt, 'borderRadius', 0, 30);
+            f2.addColor(searchTxt, 'backgroundColor').name("Background");
+            f2.addColor(searchTxt, 'textColor').name("Text");
+            f2.addColor(searchTxt, 'borderColor').name("Border");
+            f2.addColor(searchTxt, 'backgroundFocusColor').name("Background focused");
+            f2.addColor(searchTxt, 'textFocusColor').name("Text focused");
+            f2.addColor(searchTxt, 'borderFocusColor').name("Border focused");
+            f2.add(searchTxt, 'borderRadius', 0, 30).name("Corner radius");
 
             container.appendChild( stats.domElement );
 
