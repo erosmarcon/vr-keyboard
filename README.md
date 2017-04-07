@@ -150,7 +150,7 @@ If you want to go more in depth on styling and customizing, have a look at the d
 
 ## Examples
 
-* [Basic, TextInput, Styling, Complete 3D Scene](http://www.uxvision.it/projects/VRKeyboard/examples/index.html)
+* [Basic, TextInputs, Styling and a Complete 3D Scene](http://www.uxvision.it/projects/VRKeyboard/examples/index.html)
 
 
 
