@@ -16,12 +16,12 @@
 }
 
 
-body {
+body
+{
     color:#FFFFFF;
     background-color: #333333;
     margin: 0;
     overflow: hidden;
-
 }
 
 #msg
@@ -31,7 +31,6 @@ body {
     bottom: 20px;
     position: absolute;
     font-size:12px;
-
 }
 
 a
@@ -51,20 +50,13 @@ a
     padding:10px;
     cursor: pointer;
     cursor: hand;
-
 }
 
 .view-source:hover
 {
-
     background-color: rgba(0, 0, 0, 0.2);
     color:#BCFF00;
-
 }
-
-
-
-
 
 #container
 {
