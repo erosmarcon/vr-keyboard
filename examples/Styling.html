@@ -39,14 +39,12 @@
             controls.maxDistance = 25000;
 
 
-
             camera.position.set(0, 0, 1500);
             camera.lookAt(new THREE.Vector3(0,0,0))
 
             window.addEventListener('resize', onWindowResize, false);
 
             vrKeyboard=new VRKeyboard(scene, camera, renderer);
-
 
             var searchTxt=new VRTextInput();
             searchTxt.width=400
@@ -109,5 +107,6 @@
 <body onload="init('container')">
     <div id="container"></div>
     <div id="msg">Use tools on the top-right to change styles</div>
+    <a href="https://github.com/erosmarcon/vr-keyboard/blob/master/examples/Styling.html" target="_blank"><div class="view-source">View source</div></a>
 </body>
 </html>
